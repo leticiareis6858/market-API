@@ -56,3 +56,8 @@ export const updateProductBatch = async (
   const queryText = "UPDATE products SET batch = $2 WHERE id = $1";
   await pool.query(queryText, [id, batch]);
 };
+
+export const deleteProduct = async (id: number): Promise<void> => {
+  const queryText = "DELETE FROM tarefas WHERE id = $1";
+  await pool.query(queryText, [id]);
+};
