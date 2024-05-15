@@ -18,3 +18,10 @@ export const getAllBatchs = async (): Promise<IBatch[]> => {
   const { rows } = await pool.query("SELECT * FROM product-batchs");
   return rows;
 };
+
+export const getBatchById = async (id: number): Promise<IBatch> => {
+  const { rows } = await pool.query(
+    "SELECT * FROM product-batchs WHERE id = $1"
+  );
+  return rows[0];
+};
