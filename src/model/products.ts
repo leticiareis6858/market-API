@@ -22,3 +22,8 @@ export const getAllProducts = async (): Promise<IProduct[]> => {
   const { rows } = await pool.query("SELECT * FROM products");
   return rows;
 };
+
+export const getProductsByName = async (name: string): Promise<IProduct[]> => {
+  const { rows } = await pool.query("SELECT * FROM products WHERE name = $1");
+  return rows;
+};
