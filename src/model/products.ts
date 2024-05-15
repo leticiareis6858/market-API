@@ -17,3 +17,8 @@ export const createProduct = async (
   const { rows } = await pool.query(queryText, [name, expiration_date, batch]);
   return rows[0];
 };
+
+export const getAllProducts = async (): Promise<IProduct[]> => {
+  const { rows } = await pool.query("SELECT * FROM products");
+  return rows;
+};
