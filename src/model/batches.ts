@@ -1,5 +1,5 @@
 import pool from "../db/pool";
-import { IProduct } from "./products"; // Import the Product interface or class from the appropriate file
+import { IProduct } from "./products";
 
 interface IBatch {
   id: number;
