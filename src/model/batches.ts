@@ -1,7 +1,7 @@
 import pool from "../db/pool";
 import { IProduct } from "./products";
 
-interface IBatch {
+export interface IBatch {
   id: number;
   products: IProduct[];
   creation_date: Date;
