@@ -11,8 +11,12 @@ import {
 
 export const createBatch = async (req: Request, res: Response) => {
   try {
-    const { product_name, expiration_date } = req.body;
-    const newBatch = await createsBatch(product_name, expiration_date);
+    const { product_name, expiration_date, quantity } = req.body;
+    const newBatch = await createsBatch(
+      product_name,
+      expiration_date,
+      quantity
+    );
     res.status(201).json({ msg: "Batch created!", batch: newBatch });
   } catch (error: any) {
     res.status(500).json({
