@@ -54,8 +54,7 @@ const createBatchesTable = async () => {
       await client.query(`
         CREATE TABLE product_batches (
           id SERIAL PRIMARY KEY,
-          products INTEGER[],
-          creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         )
       `);
       console.log("Product_batches table created!");
@@ -79,10 +78,12 @@ const createProductsTable = async () => {
     const tableExists = result.rows[0].exists;
 
     if (!tableExists) {
-      await client.query(`CREATE TABLE products ( id SERIAL PRIMARY KEY,
+      await client.query(`CREATE TABLE products ( 
+        id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         expiration_date TIMESTAMP,
-        batch INTEGER)`);
+        batch_id INTEGER REFERENCES product_batches(id)
+      )`);
       console.log("Products table created!");
     } else {
       console.log("Products table already exists!");

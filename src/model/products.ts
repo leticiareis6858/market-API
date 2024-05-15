@@ -5,7 +5,7 @@ export interface IProduct {
   id: number;
   name: string;
   expiration_date: Date;
-  batch: IBatch;
+  batch_id: IBatch;
 }
 
 export const createProduct = async (
