@@ -6,3 +6,10 @@ interface IBatch {
   products: IProduct[];
   creation_date: Date;
 }
+
+export const createBatch = async (products: IProduct[]): Promise<IBatch> => {
+  const querytText =
+    "INSERT INTO product-batchs (products, creation_date) VALUES ($1, CURRENT_TIMESTAMP) RETURNING *";
+  const { rows } = await pool.query(querytText, [products]);
+  return rows[0];
+};
