@@ -25,3 +25,8 @@ export const getBatchById = async (id: number): Promise<IBatch> => {
   );
   return rows[0];
 };
+
+export const deleteBatch = async (id: number): Promise<void> => {
+  const queryText = "DELETE FROM product-batchs WHERE id = $1";
+  await pool.query(queryText, [id]);
+};
