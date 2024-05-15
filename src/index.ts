@@ -41,12 +41,42 @@ const createDB = async () => {
   }
 };
 
+const createBatchesTable = async () => {
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(`
+      SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'product-batches')
+    `);
+    const tableExists = result.rows[0].exists;
+
+    if (!tableExists) {
+      await client.query(`
+        CREATE TABLE product-batches (
+          id SERIAL PRIMARY KEY,
+          products INTEGER[],
+          creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+      console.log("Product-batches table created!");
+    } else {
+      console.log("Product-batches table already exists!");
+    }
+  } catch (error) {
+    console.error("Error while creating product-batches table", error);
+  } finally {
+    client.release();
+  }
+};
+
 const start = async function () {
   try {
     await connectToDB();
     console.log(`Conected to database with success!`);
 
     await createDB();
+
+    await createBatchesTable();
 
     app.listen(port, () => {
       console.log(`Server is listening on port: ${port}`);
