@@ -21,3 +21,5 @@ router.route("/products_batch/:id/product_name").patch(updateBatchProductName);
 router
   .route("/products_batch/:id/expiration_date")
   .patch(updateBatchExpirationDate);
+
+export { router as batchesRoutes };
