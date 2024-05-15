@@ -32,3 +32,11 @@ export const getProductById = async (id: number): Promise<IProduct> => {
   const { rows } = await pool.query("SELECT * FROM products WHERE id = $1");
   return rows[0];
 };
+
+export const updateProductName = async (
+  id: number,
+  name: string
+): Promise<void> => {
+  const queryText = "UPDATE products SET name = $2 WHERE id = $1";
+  await pool.query(queryText, [id, name]);
+};
