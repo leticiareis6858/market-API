@@ -46,16 +46,23 @@ const createBatchesTable = async () => {
 
   try {
     const result = await client.query(`
-      SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'product_batches')
+      SELECT EXISTS (
+        SELECT 1 
+        FROM information_schema.tables 
+        WHERE table_schema = 'public' 
+        AND table_name = 'product_batches'
+      )
     `);
     const tableExists = result.rows[0].exists;
 
     if (!tableExists) {
       await client.query(`
-        CREATE TABLE product_batches (
-          id SERIAL PRIMARY KEY,
-          creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        )
+      CREATE TABLE IF NOT EXISTS product_batches (
+        id SERIAL PRIMARY KEY,
+        product_name VARCHAR(255) NOT NULL,
+        creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        expiration_date DATE NOT NULL
+    );
       `);
       console.log("Product_batches table created!");
     } else {
@@ -78,12 +85,13 @@ const createProductsTable = async () => {
     const tableExists = result.rows[0].exists;
 
     if (!tableExists) {
-      await client.query(`CREATE TABLE products ( 
+      await client.query(`CREATE TABLE IF NOT EXISTS products (
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
-        expiration_date TIMESTAMP,
-        batch_id INTEGER REFERENCES product_batches(id)
-      )`);
+        expiration_date DATE NOT NULL,
+        batch_id INTEGER NOT NULL,
+        FOREIGN KEY (batch_id) REFERENCES product_batches(id)
+    );`);
       console.log("Products table created!");
     } else {
       console.log("Products table already exists!");
@@ -98,7 +106,7 @@ const createProductsTable = async () => {
 const start = async function () {
   try {
     await connectToDB();
-    console.log(`Conected to database with success!`);
+    console.log(`Connected to database with success!`);
 
     await createDB();
     await createBatchesTable();
@@ -124,7 +132,7 @@ const shutdown = async function () {
 };
 
 process.on("SIGINT", async () => {
-  console.log("Shuting down...");
+  console.log("Shutting down...");
   await shutdown();
 });
 

@@ -1,32 +1,36 @@
 import pool from "../db/pool";
-import { IProduct } from "./products";
 
 export interface IBatch {
   id: number;
-  products: IProduct[];
+  product_name: string;
   creation_date: Date;
+  expiration_date: Date;
 }
 
-export const createBatch = async (products: IProduct[]): Promise<IBatch> => {
-  const querytText =
-    "INSERT INTO product-batches (products, creation_date) VALUES ($1, CURRENT_TIMESTAMP) RETURNING *";
-  const { rows } = await pool.query(querytText, [products]);
+export const createBatch = async (
+  product_name: string,
+  expiration_date: Date
+): Promise<IBatch> => {
+  const queryText =
+    "INSERT INTO product_batches (product_name, creation_date, expiration_date) VALUES ($1, CURRENT_TIMESTAMP, $2) RETURNING *";
+  const { rows } = await pool.query(queryText, [product_name, expiration_date]);
   return rows[0];
 };
 
 export const getAllBatches = async (): Promise<IBatch[]> => {
-  const { rows } = await pool.query("SELECT * FROM product-batches");
+  const { rows } = await pool.query("SELECT * FROM product_batches");
   return rows;
 };
 
 export const getBatchById = async (id: number): Promise<IBatch> => {
   const { rows } = await pool.query(
-    "SELECT * FROM product-batches WHERE id = $1"
+    "SELECT * FROM product_batches WHERE id = $1",
+    [id]
   );
   return rows[0];
 };
 
 export const deleteBatch = async (id: number): Promise<void> => {
-  const queryText = "DELETE FROM product-batches WHERE id = $1";
+  const queryText = "DELETE FROM product_batches WHERE id = $1";
   await pool.query(queryText, [id]);
 };

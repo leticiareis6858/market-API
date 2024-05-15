@@ -1,21 +1,24 @@
 import pool from "../db/pool";
-import { IBatch } from "./batches";
 
 export interface IProduct {
   id: number;
   name: string;
   expiration_date: Date;
-  batch_id: IBatch;
+  batch_id: number;
 }
 
 export const createProduct = async (
   name: string,
   expiration_date: Date,
-  batch: number
+  batch_id: number
 ): Promise<IProduct> => {
   const queryText =
-    "INSERT INTO products (name, expiration_date, batch) values ($1, $2, $3) RETURNING *";
-  const { rows } = await pool.query(queryText, [name, expiration_date, batch]);
+    "INSERT INTO products (name, expiration_date, batch_id) VALUES ($1, $2, $3) RETURNING *";
+  const { rows } = await pool.query(queryText, [
+    name,
+    expiration_date,
+    batch_id,
+  ]);
   return rows[0];
 };
 
@@ -25,12 +28,16 @@ export const getAllProducts = async (): Promise<IProduct[]> => {
 };
 
 export const getProductsByName = async (name: string): Promise<IProduct[]> => {
-  const { rows } = await pool.query("SELECT * FROM products WHERE name = $1");
+  const { rows } = await pool.query("SELECT * FROM products WHERE name = $1", [
+    name,
+  ]);
   return rows;
 };
 
 export const getProductById = async (id: number): Promise<IProduct> => {
-  const { rows } = await pool.query("SELECT * FROM products WHERE id = $1");
+  const { rows } = await pool.query("SELECT * FROM products WHERE id = $1", [
+    id,
+  ]);
   return rows[0];
 };
 
@@ -52,13 +59,13 @@ export const updateProductExpirationDate = async (
 
 export const updateProductBatch = async (
   id: number,
-  batch: number
+  batch_id: number
 ): Promise<void> => {
-  const queryText = "UPDATE products SET batch = $2 WHERE id = $1";
-  await pool.query(queryText, [id, batch]);
+  const queryText = "UPDATE products SET batch_id = $2 WHERE id = $1";
+  await pool.query(queryText, [id, batch_id]);
 };
 
 export const deleteProduct = async (id: number): Promise<void> => {
-  const queryText = "DELETE FROM tarefas WHERE id = $1";
+  const queryText = "DELETE FROM products WHERE id = $1";
   await pool.query(queryText, [id]);
 };
