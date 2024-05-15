@@ -48,3 +48,11 @@ export const updateProductExpirationDate = async (
   const queryText = "UPDATE products SET expiration_date = $2 WHERE id = $1";
   await pool.query(queryText, [id, expiration_date]);
 };
+
+export const updateProductBatch = async (
+  id: number,
+  batch: number
+): Promise<void> => {
+  const queryText = "UPDATE products SET batch = $2 WHERE id = $1";
+  await pool.query(queryText, [id, batch]);
+};
