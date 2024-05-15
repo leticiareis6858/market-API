@@ -2,10 +2,13 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import { connectToDB, disconnectFromDB } from "./db/connect";
 import pool from "./db/pool";
+import { batchesRoutes } from "./routes/batches";
 
 const app = express();
 
 app.use(express.json());
+
+app.use("/api-market", batchesRoutes);
 
 dotenv.config();
 
@@ -14,32 +17,6 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 const port = process.env.PORT || 3000;
-
-const createDB = async () => {
-  const client = await pool.connect();
-
-  try {
-    const result = await client.query(
-      "SELECT EXISTS (SELECT 1 FROM pg_database WHERE datname = $1)",
-      ["market-API"]
-    );
-    const exists = result.rows[0].exists;
-
-    if (!exists) {
-      await client.query('CREATE DATABASE "market-API"');
-      console.log("Database created!");
-    } else {
-      console.log("Database already exists!");
-    }
-  } catch (error) {
-    console.error(
-      "Error while creating database or verifying if it already exists",
-      error
-    );
-  } finally {
-    await client.release();
-  }
-};
 
 const createBatchesTable = async () => {
   const client = await pool.connect();
@@ -108,7 +85,6 @@ const start = async function () {
     await connectToDB();
     console.log(`Connected to database with success!`);
 
-    await createDB();
     await createBatchesTable();
     await createProductsTable();
 
