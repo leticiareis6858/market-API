@@ -1,10 +1,11 @@
 import pool from "../db/pool";
+import { IBatch } from "./batches";
 
 export interface IProduct {
   id: number;
   name: string;
   expiration_date: Date;
-  batch: number;
+  batch: IBatch;
 }
 
 export const createProduct = async (
