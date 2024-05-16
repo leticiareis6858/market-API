@@ -11,6 +11,7 @@ import {
   deleteBatch,
   updateBatchUnitBuyingPrice,
   updateBatchUnitSellingPrice,
+  getBatchProfit,
 } from "../controller/batches";
 
 router.route("/products_batch").post(createBatch).get(getAllBatches);
@@ -29,5 +30,6 @@ router
 router
   .route("/products_batch/:id/unit_selling_price")
   .patch(updateBatchUnitSellingPrice);
+router.route("/products_batch/:id/profit").get(getBatchProfit);
 
 export { router as batchesRoutes };

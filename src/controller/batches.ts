@@ -9,6 +9,7 @@ import {
   updatesBatchUnitBuyingPrice,
   updatesBatchUnitSellingPrice,
   deletesBatch,
+  getsBatchProfit,
 } from "../model/batches";
 
 export const createBatch = async (req: Request, res: Response) => {
@@ -159,6 +160,19 @@ export const deleteBatch = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({
       msg: "Error while deleting batch. Please, try again.",
+      error: error.message || "Unknown error",
+    });
+  }
+};
+
+export const getBatchProfit = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const profit = await getsBatchProfit(Number(id));
+    res.status(200).json({ msg: `Batch profit is: $${profit}` });
+  } catch (error: any) {
+    res.status(500).json({
+      msg: "Error while getting batch profit. Please, try again.",
       error: error.message || "Unknown error",
     });
   }

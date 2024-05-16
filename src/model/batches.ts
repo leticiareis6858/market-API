@@ -144,3 +144,20 @@ export const deletesBatch = async (id: number): Promise<void> => {
     client.release();
   }
 };
+
+export const getsBatchProfit = async (batchId: number): Promise<number> => {
+  const queryText =
+    "SELECT SUM(unit_selling_price) AS total_selling_price, SUM(unit_buying_price) AS total_buying_price, COUNT(*) AS total_products FROM products WHERE batch_id = $1 ";
+  const { rows } = await pool.query(queryText, [batchId]);
+  const { total_selling_price, total_buying_price, total_products } = rows[0];
+
+  if (total_products === 0) {
+    throw new Error("No products in batch");
+  }
+
+  const totalSellingPrice = parseFloat(total_selling_price);
+  const totalBuyingPrice = parseFloat(total_buying_price);
+  const profit = parseFloat((totalSellingPrice - totalBuyingPrice).toFixed(2));
+
+  return profit;
+};
