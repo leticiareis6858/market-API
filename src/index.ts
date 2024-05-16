@@ -37,6 +37,8 @@ const createBatchesTable = async () => {
       CREATE TABLE IF NOT EXISTS product_batches (
         id SERIAL PRIMARY KEY,
         product_name VARCHAR(255) NOT NULL,
+        unit_buying_price DECIMAL NOT NULL,
+        unit_selling_price DECIMAL NOT NULL,
         creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         expiration_date DATE NOT NULL
     );
@@ -65,6 +67,8 @@ const createProductsTable = async () => {
       await client.query(`CREATE TABLE IF NOT EXISTS products (
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
+        unit_buying_price DECIMAL NOT NULL,
+        unit_selling_price DECIMAL NOT NULL,
         expiration_date DATE NOT NULL,
         batch_id INTEGER NOT NULL,
         FOREIGN KEY (batch_id) REFERENCES product_batches(id)
