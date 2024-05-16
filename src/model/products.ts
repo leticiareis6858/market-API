@@ -3,19 +3,25 @@ import pool from "../db/pool";
 export interface IProduct {
   id: number;
   name: string;
+  unit_buying_price: number;
+  unit_selling_price: number;
   expiration_date: Date;
   batch_id: number;
 }
 
 export const createProduct = async (
   name: string,
+  unit_buying_price: number,
+  unit_selling_price: number,
   expiration_date: Date,
   batch_id: number
 ): Promise<IProduct> => {
   const queryText =
-    "INSERT INTO products (name, expiration_date, batch_id) VALUES ($1, $2, $3) RETURNING *";
+    "INSERT INTO products (name, unit_buying_price, unit_selling_price, expiration_date, batch_id) VALUES ($1, $2, $3, $4, $5) RETURNING *";
   const { rows } = await pool.query(queryText, [
     name,
+    unit_buying_price,
+    unit_selling_price,
     expiration_date,
     batch_id,
   ]);
