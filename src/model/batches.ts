@@ -126,6 +126,21 @@ export const updatesBatchUnitSellingPrice = async (
 };
 
 export const deletesBatch = async (id: number): Promise<void> => {
-  const queryText = "DELETE FROM product_batches WHERE id = $1";
-  await pool.query(queryText, [id]);
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+
+    const deleteProductsQueryText = "DELETE FROM products WHERE batch_id=$1";
+    await client.query(deleteProductsQueryText, [id]);
+
+    const deleteBatchQueryText = "DELETE FROM product_batches WHERE id=$1";
+    await client.query(deleteBatchQueryText, [id]);
+
+    await client.query("COMMIT");
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
 };
