@@ -81,3 +81,34 @@ export const getTotalProducts = async (): Promise<number> => {
   const { rows } = await pool.query(queryText);
   return parseInt(rows[0].count);
 };
+
+export const getsTotalProfit = async (): Promise<number> => {
+  const queryText =
+    "SELECT SUM(unit_selling_price) AS total_selling_price, SUM(unit_buying_price) AS total_buying_price FROM products";
+  const { rows } = await pool.query(queryText);
+  const { total_selling_price, total_buying_price } = rows[0];
+
+  if (
+    parseFloat(total_selling_price) === 0 ||
+    parseFloat(total_buying_price) === 0
+  ) {
+    throw new Error("No products found or prices are equal to zero!");
+  }
+
+  const totalSellingPrice = parseFloat(total_selling_price);
+  const totalBuyingPrice = parseFloat(total_buying_price);
+  const totalProfit = parseFloat(
+    (totalSellingPrice - totalBuyingPrice).toFixed(2)
+  );
+
+  return totalProfit;
+};
+
+export const getTotalProductsByName = async (): Promise<
+  { product_name: string; total: number }[]
+> => {
+  const queryText =
+    "SELECT name AS product_name, COUNT(*) AS total_in_stock FROM products GROUP BY product_name";
+  const { rows } = await pool.query(queryText);
+  return rows;
+};
