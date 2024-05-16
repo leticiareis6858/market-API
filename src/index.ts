@@ -3,12 +3,13 @@ import dotenv from "dotenv";
 import { connectToDB, disconnectFromDB } from "./db/connect";
 import pool from "./db/pool";
 import { batchesRoutes } from "./routes/batches";
+import { productsRoutes } from "./routes/products";
 
 const app = express();
 
 app.use(express.json());
 
-app.use("/api-market", batchesRoutes);
+app.use("/api-market", batchesRoutes, productsRoutes);
 
 dotenv.config();
 

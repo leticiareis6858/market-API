@@ -75,3 +75,9 @@ export const deleteProduct = async (id: number): Promise<void> => {
   const queryText = "DELETE FROM products WHERE id = $1";
   await pool.query(queryText, [id]);
 };
+
+export const getTotalProducts = async (): Promise<number> => {
+  const queryText = "SELECT COUNT(*) FROM products";
+  const { rows } = await pool.query(queryText);
+  return parseInt(rows[0].count);
+};
