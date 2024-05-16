@@ -15,15 +15,15 @@ export const createBatch = async (req: Request, res: Response) => {
   try {
     const {
       product_name,
-      buying_price,
-      selling_price,
+      unit_buying_price,
+      unit_selling_price,
       expiration_date,
       quantity,
     } = req.body;
     const newBatch = await createsBatch(
       product_name,
-      buying_price,
-      selling_price,
+      unit_buying_price,
+      unit_selling_price,
       expiration_date,
       quantity
     );
@@ -64,13 +64,17 @@ export const getBatchById = async (req: Request, res: Response) => {
 export const updateAllBatchInfo = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { product_name, buying_price, selling_price, expiration_date } =
-      req.body;
+    const {
+      product_name,
+      unit_buying_price,
+      unit_selling_price,
+      expiration_date,
+    } = req.body;
     await updatesAllBatchInfo(
       Number(id),
       product_name,
-      buying_price,
-      selling_price,
+      unit_buying_price,
+      unit_selling_price,
       expiration_date
     );
     res.status(200).json({ msg: "Batch updated!" });
