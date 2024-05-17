@@ -1,5 +1,6 @@
-import { Router } from "express";
-const router = Router();
+import { authMiddleware, verifyRoles } from "../middleware/authentication";
+import express from "express";
+const router = express.Router();
 
 import {
   createBatch,
@@ -14,22 +15,74 @@ import {
   getBatchProfit,
 } from "../controller/batches";
 
-router.route("/products_batch").post(createBatch).get(getAllBatches);
-router
-  .route("/products_batch/:id")
-  .get(getBatchById)
-  .put(updateAllBatchInfo)
-  .delete(deleteBatch);
-router.route("/products_batch/:id/product_name").patch(updateBatchProductName);
-router
-  .route("/products_batch/:id/expiration_date")
-  .patch(updateBatchExpirationDate);
-router
-  .route("/products_batch/:id/unit_buying_price")
-  .patch(updateBatchUnitBuyingPrice);
-router
-  .route("/products_batch/:id/unit_selling_price")
-  .patch(updateBatchUnitSellingPrice);
-router.route("/products_batch/:id/profit").get(getBatchProfit);
+router.post(
+  "/products_batch",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  createBatch
+);
+
+router.get(
+  "/products_batch",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  getAllBatches
+);
+
+router.get(
+  "/products_batch/:id",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  getBatchById
+);
+
+router.put(
+  "/products_batch/:id",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  updateAllBatchInfo
+);
+
+router.delete(
+  "/products_batch/:id",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  deleteBatch
+);
+
+router.patch(
+  "/products_batch/:id/product_name",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  updateBatchProductName
+);
+
+router.patch(
+  "/products_batch/:id/expiration_date",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  updateBatchExpirationDate
+);
+
+router.patch(
+  "/products_batch/:id/unit_buying_price",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  updateBatchUnitBuyingPrice
+);
+
+router.patch(
+  "/products_batch/:id/unit_selling_price",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  updateBatchUnitSellingPrice
+);
+
+router.get(
+  "/products_batch/:id/profit",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  getBatchProfit
+);
 
 export { router as batchesRoutes };

@@ -1,3 +1,4 @@
+import { authMiddleware, verifyRoles } from "../middleware/authentication";
 import express from "express";
 import {
   getStockByProductName,
@@ -7,8 +8,23 @@ import {
 
 const router = express.Router();
 
-router.get("/stock/total", getTotalProductsInStock);
-router.get("/stock/total-profit", getTotalStockProfit);
-router.get("/stock/total-by-product", getStockByProductName);
+router.get(
+  "/stock/total",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  getTotalProductsInStock
+);
+router.get(
+  "/stock/total-profit",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  getTotalStockProfit
+);
+router.get(
+  "/stock/total-by-product",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  getStockByProductName
+);
 
 export { router as stockRoutes };
