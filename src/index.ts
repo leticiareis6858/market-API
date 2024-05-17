@@ -4,12 +4,13 @@ import { connectToDB, disconnectFromDB } from "./db/connect";
 import pool from "./db/pool";
 import { batchesRoutes } from "./routes/batches";
 import { stockRoutes } from "./routes/stock";
+import { userRoutes } from "./routes/users";
 
 const app = express();
 
 app.use(express.json());
 
-app.use("/api-market", batchesRoutes, stockRoutes);
+app.use("/api-market", batchesRoutes, stockRoutes, userRoutes);
 
 dotenv.config();
 
@@ -85,6 +86,34 @@ const createProductsTable = async () => {
   }
 };
 
+const createUserTable = async () => {
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(
+      `SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'users')`
+    );
+    const tableExists = result.rows[0].exists;
+
+    if (!tableExists) {
+      await client.query(`CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        role VARCHAR(255) NOT NULL
+    );`);
+      console.log("Users table created!");
+    } else {
+      console.log("Users table already exists!");
+    }
+  } catch (error) {
+    console.error("Error while creating users table", error);
+  } finally {
+    client.release();
+  }
+};
+
 const start = async function () {
   try {
     await connectToDB();
@@ -92,6 +121,7 @@ const start = async function () {
 
     await createBatchesTable();
     await createProductsTable();
+    await createUserTable();
 
     app.listen(port, () => {
       console.log(`Server is listening on port: ${port}`);
