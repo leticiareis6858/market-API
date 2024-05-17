@@ -1,5 +1,6 @@
 import pool from "../db/pool";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export interface IUser {
   name: string;
@@ -29,20 +30,26 @@ export const createsUser = async (
 export const authenticatesUser = async (
   email: string,
   password: string
-): Promise<IUser> => {
-  const queryText = "SELECT * FROM users WHERE email=$1";
-  const { rows } = await pool.query(queryText, [email]);
+): Promise<String> => {
+  const userQueryText = "SELECT * FROM users WHERE email=$1";
+  const { rows } = await pool.query(userQueryText, [email]);
+  const user = rows[0];
 
-  if (rows.length === 0) {
-    throw new Error("Email not found, please try again!");
+  if (!user) {
+    throw new Error("Invalid creedentials!");
   }
 
-  const user = rows[0];
   const validPassword = await bcrypt.compare(password, user.password);
 
   if (!validPassword) {
     throw new Error("Invalid password, please try again!");
   }
 
-  return user;
+  const payload = { id: user.id, name: user.name, role: user.role };
+  const secret =
+    process.env.JWT_SECRET ||
+    "53B71FB31FA20B3EA74319BC9551F5E1EB4046D1F16E81AFCF45CD4C2568B9AE";
+  const token = jwt.sign(payload, secret, { expiresIn: "1h" });
+
+  return token;
 };
