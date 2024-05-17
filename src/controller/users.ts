@@ -29,14 +29,16 @@ export const createUser = async (req: Request, res: Response) => {
 export const userLogin = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    const user = await authenticatesUser(email, password);
+    const token = await authenticatesUser(email, password);
 
-    if (!user) {
+    if (!token) {
       return res
         .status(401)
         .json({ msg: "Invalid credentials. Please, try again." });
     }
-    res.status(200).json({ msg: "User authenticated!", user });
+    res
+      .status(200)
+      .json({ msg: "User authenticated! Here is your token: ", token });
   } catch (error: any) {
     res.status(500).json({
       msg: "Error while authenticating user. Please, try again.",
