@@ -118,14 +118,6 @@ export const createsCashier = async (
   return rows[0];
 };
 
-//TODO: Implement the following functions
-// updatesUser, updatesManager, updatesStocker, updatesCashier -- done
-// deletesUser, deletesManager, deletesStocker, deletesCashier -- done
-// updatePassword, updateRole, updateEmail -- done
-// getsAllWorkers, getsAllAdmins, getsAllManagers, getsAllStockers, getsAllCashiers -- done
-// getWorkerById, getAdminById, getManagerById, getStockerById, getCashierById -- done
-//getWorkerByName, getManagerByName, getStockerByName, getCashierByName
-
 //update:
 
 export const updatesUser = async (
@@ -294,4 +286,41 @@ export const getsCashierById = async (
   const queryText = "SELECT name, email, role FROM users WHERE id=$1";
   const { rows } = await pool.query(queryText, [id]);
   return rows[0];
+};
+
+//get by name:
+
+export const getsWorkerByName = async (
+  name: string
+): Promise<{ name: string; email: string; role: string }[]> => {
+  const queryText = "SELECT name, email, role FROM users WHERE name=$1";
+  const { rows } = await pool.query(queryText, [name]);
+  return rows;
+};
+
+export const getsManagerByName = async (
+  name: string
+): Promise<{ name: string; email: string; role: string }[]> => {
+  const queryText =
+    "SELECT name, email, role FROM users WHERE name=$1 AND role='manager'";
+  const { rows } = await pool.query(queryText, [name]);
+  return rows;
+};
+
+export const getsStockerByName = async (
+  name: string
+): Promise<{ name: string; email: string; role: string }[]> => {
+  const queryText =
+    "SELECT name, email, role FROM users WHERE name=$1 AND role='stocker'";
+  const { rows } = await pool.query(queryText, [name]);
+  return rows;
+};
+
+export const getsCashierByName = async (
+  name: string
+): Promise<{ name: string; email: string; role: string }[]> => {
+  const queryText =
+    "SELECT name, email, role FROM users WHERE name=$1 AND role='cashier'";
+  const { rows } = await pool.query(queryText, [name]);
+  return rows;
 };
