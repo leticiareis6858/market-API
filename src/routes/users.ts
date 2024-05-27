@@ -66,6 +66,8 @@ router.post(
   createCashier
 );
 
+//update:
+
 router.patch(
   "/user/update/:id",
   authMiddleware,
@@ -93,6 +95,8 @@ router.patch(
   verifyRoles("admin", "manager"),
   updateCashier
 );
+
+//update password, role, email:
 
 router.patch("/user/update/password/:id", authMiddleware, updatePassword);
 

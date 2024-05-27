@@ -15,6 +15,7 @@ import {
   getBatchProfit,
 } from "../controller/batches";
 
+//create batch:
 router.post(
   "/products_batch",
   authMiddleware,
@@ -22,6 +23,7 @@ router.post(
   createBatch
 );
 
+//get all batches:
 router.get(
   "/products_batch",
   authMiddleware,
@@ -29,6 +31,7 @@ router.get(
   getAllBatches
 );
 
+//get batch by id:
 router.get(
   "/products_batch/:id",
   authMiddleware,
@@ -36,6 +39,7 @@ router.get(
   getBatchById
 );
 
+//get all batch info:
 router.put(
   "/products_batch/:id",
   authMiddleware,
@@ -43,6 +47,7 @@ router.put(
   updateAllBatchInfo
 );
 
+//delete batch:
 router.delete(
   "/products_batch/:id",
   authMiddleware,
@@ -50,6 +55,7 @@ router.delete(
   deleteBatch
 );
 
+//update the name of the product in the batch:
 router.patch(
   "/products_batch/:id/product_name",
   authMiddleware,
@@ -57,6 +63,7 @@ router.patch(
   updateBatchProductName
 );
 
+//update the expiration date of the product in the batch:
 router.patch(
   "/products_batch/:id/expiration_date",
   authMiddleware,
@@ -64,6 +71,7 @@ router.patch(
   updateBatchExpirationDate
 );
 
+//update the product's unit buying price in the batch:
 router.patch(
   "/products_batch/:id/unit_buying_price",
   authMiddleware,
@@ -71,6 +79,7 @@ router.patch(
   updateBatchUnitBuyingPrice
 );
 
+//update the product's unit selling price in the batch:
 router.patch(
   "/products_batch/:id/unit_selling_price",
   authMiddleware,
@@ -78,6 +87,7 @@ router.patch(
   updateBatchUnitSellingPrice
 );
 
+//get the profit of the batch:
 router.get(
   "/products_batch/:id/profit",
   authMiddleware,
