@@ -258,40 +258,40 @@ export const getsAllCashiers = async (): Promise<
 
 export const getsWorkerById = async (
   id: number
-): Promise<{ name: string; role: string }[]> => {
+): Promise<{ name: string; role: string }> => {
   const queryText = "SELECT name, role FROM users WHERE id=$1";
   const { rows } = await pool.query(queryText, [id]);
-  return rows;
+  return rows[0];
 };
 
 export const getsAdminById = async (
   id: number
-): Promise<{ name: string; email: string; role: string }[]> => {
+): Promise<{ name: string; email: string; role: string }> => {
   const queryText = "SELECT name, email, role FROM users WHERE id=$1";
   const { rows } = await pool.query(queryText, [id]);
-  return rows;
+  return rows[0];
 };
 
 export const getsManagerById = async (
   id: number
-): Promise<{ name: string; email: string; role: string }[]> => {
+): Promise<{ name: string; email: string; role: string }> => {
   const queryText = "SELECT name, email, role FROM users WHERE id=$1";
   const { rows } = await pool.query(queryText, [id]);
-  return rows;
+  return rows[0];
 };
 
 export const getsStockerById = async (
   id: number
-): Promise<{ name: string; email: string; role: string }[]> => {
+): Promise<{ name: string; email: string; role: string }> => {
   const queryText = "SELECT name, email, role FROM users WHERE id=$1";
   const { rows } = await pool.query(queryText, [id]);
-  return rows;
+  return rows[0];
 };
 
 export const getsCashierById = async (
   id: number
-): Promise<{ name: string; email: string; role: string }[]> => {
+): Promise<{ name: string; email: string; role: string }> => {
   const queryText = "SELECT name, email, role FROM users WHERE id=$1";
   const { rows } = await pool.query(queryText, [id]);
-  return rows;
+  return rows[0];
 };
