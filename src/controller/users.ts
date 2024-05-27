@@ -135,14 +135,6 @@ export const createCashier = async (req: Request, res: Response) => {
   }
 };
 
-//TODO: Implement the following functions
-// updatesUser, updatesManager, updatesStocker, updatesCashier -- done
-// deletesUser, deletesManager, deletesStocker, deletesCashier --
-// updatePassword, updateRole, updateEmail -- done
-// getsAllWorkers, getsAllAdmins, getsAllManagers, getsAllStockers, getsAllCashiers --
-// getWorkerById, getAdminById, getManagerById, getStockerById, getCashierById --
-//getWorkerByName, getManagerByName, getStockerByName, getCashierByName --
-
 //update:
 
 export const updateRole = async (req: Request, res: Response) => {
@@ -245,6 +237,68 @@ export const updateCashier = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({
       msg: "Error while updating cashier. Please, try again.",
+      error: error.message || "Unknown error",
+    });
+  }
+};
+
+//TODO: Implement the following functions
+// updatesUser, updatesManager, updatesStocker, updatesCashier -- done
+// deletesUser, deletesManager, deletesStocker, deletesCashier -- done
+// updatePassword, updateRole, updateEmail -- done
+// getsAllWorkers, getsAllAdmins, getsAllManagers, getsAllStockers, getsAllCashiers --
+// getWorkerById, getAdminById, getManagerById, getStockerById, getCashierById --
+//getWorkerByName, getManagerByName, getStockerByName, getCashierByName --
+
+//delete:
+
+export const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.body;
+    await deletesUser(id);
+    res.status(200).json({ msg: "User deleted!" });
+  } catch (error: any) {
+    res.status(500).json({
+      msg: "Error while deleting user. Please, try again.",
+      error: error.message || "Unknown error",
+    });
+  }
+};
+
+export const deleteManager = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.body;
+    await deletesManager(id);
+    res.status(200).json({ msg: "Manager deleted!" });
+  } catch (error: any) {
+    res.status(500).json({
+      msg: "Error while deleting manager. Please, try again.",
+      error: error.message || "Unknown error",
+    });
+  }
+};
+
+export const deleteStocker = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.body;
+    await deletesStocker(id);
+    res.status(200).json({ msg: "Stocker deleted!" });
+  } catch (error: any) {
+    res.status(500).json({
+      msg: "Error while deleting stocker. Please, try again.",
+      error: error.message || "Unknown error",
+    });
+  }
+};
+
+export const deleteCashier = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.body;
+    await deletesCashier(id);
+    res.status(200).json({ msg: "Cashier deleted!" });
+  } catch (error: any) {
+    res.status(500).json({
+      msg: "Error while deleting cashier. Please, try again.",
       error: error.message || "Unknown error",
     });
   }
