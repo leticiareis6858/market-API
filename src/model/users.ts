@@ -123,7 +123,7 @@ export const createsCashier = async (
 // deletesUser, deletesManager, deletesStocker, deletesCashier -- done
 // updatePassword, updateRole, updateEmail -- done
 // getsAllWorkers, getsAllAdmins, getsAllManagers, getsAllStockers, getsAllCashiers -- done
-// getWorkerById, getAdminById, getManagerById, getStockerById, getCashierById
+// getWorkerById, getAdminById, getManagerById, getStockerById, getCashierById -- done
 //getWorkerByName, getManagerByName, getStockerByName, getCashierByName
 
 //update:
@@ -251,5 +251,47 @@ export const getsAllCashiers = async (): Promise<
 > => {
   const queryText = "SELECT name, role FROM users WHERE role='cashier'";
   const { rows } = await pool.query(queryText);
+  return rows;
+};
+
+//get by id:
+
+export const getsWorkerById = async (
+  id: number
+): Promise<{ name: string; role: string }[]> => {
+  const queryText = "SELECT name, role FROM users WHERE id=$1";
+  const { rows } = await pool.query(queryText, [id]);
+  return rows;
+};
+
+export const getsAdminById = async (
+  id: number
+): Promise<{ name: string; email: string; role: string }[]> => {
+  const queryText = "SELECT name, email, role FROM users WHERE id=$1";
+  const { rows } = await pool.query(queryText, [id]);
+  return rows;
+};
+
+export const getsManagerById = async (
+  id: number
+): Promise<{ name: string; email: string; role: string }[]> => {
+  const queryText = "SELECT name, email, role FROM users WHERE id=$1";
+  const { rows } = await pool.query(queryText, [id]);
+  return rows;
+};
+
+export const getsStockerById = async (
+  id: number
+): Promise<{ name: string; email: string; role: string }[]> => {
+  const queryText = "SELECT name, email, role FROM users WHERE id=$1";
+  const { rows } = await pool.query(queryText, [id]);
+  return rows;
+};
+
+export const getsCashierById = async (
+  id: number
+): Promise<{ name: string; email: string; role: string }[]> => {
+  const queryText = "SELECT name, email, role FROM users WHERE id=$1";
+  const { rows } = await pool.query(queryText, [id]);
   return rows;
 };
