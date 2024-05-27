@@ -167,4 +167,36 @@ router.get(
   getAllCashiers
 );
 
+//get by id:
+
+router.get("/user/:id", authMiddleware, verifyRoles("admin"), getWorkerById);
+
+router.get(
+  "/user/admin/:id",
+  authMiddleware,
+  verifyRoles("admin"),
+  getAdminById
+);
+
+router.get(
+  "/user/manager/:id",
+  authMiddleware,
+  verifyRoles("admin"),
+  getManagerById
+);
+
+router.get(
+  "/user/stocker/:id",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  getStockerById
+);
+
+router.get(
+  "/user/cashier/:id",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  getCashierById
+);
+
 export { router as userRoutes };
