@@ -105,4 +105,34 @@ router.patch(
 
 router.patch("/user/update/email/:id", authMiddleware, updateEmail);
 
+//delete:
+
+router.delete(
+  "/user/delete/:id",
+  authMiddleware,
+  verifyRoles("admin"),
+  deleteUser
+);
+
+router.delete(
+  "/user/delete/manager/:id",
+  authMiddleware,
+  verifyRoles("admin"),
+  deleteManager
+);
+
+router.delete(
+  "/user/delete/stocker/:id",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  deleteStocker
+);
+
+router.delete(
+  "/user/delete/cashier/:id",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  deleteCashier
+);
+
 export { router as userRoutes };
