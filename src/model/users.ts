@@ -184,3 +184,8 @@ export const updatesRole = async (id: number, role: string): Promise<void> => {
   const queryText = "UPDATE users SET role=$2 WHERE id=$1";
   await pool.query(queryText, [id, role]);
 };
+
+export const updatesName = async (id: number, name: string): Promise<void> => {
+  const queryText = "UPDATE users SET name=$2 WHERE id=$1";
+  await pool.query(queryText, [id, name]);
+};
