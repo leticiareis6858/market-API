@@ -135,4 +135,36 @@ router.delete(
   deleteCashier
 );
 
+//get all:
+
+router.get("/user/all", authMiddleware, verifyRoles("admin"), getAllWorkers);
+
+router.get(
+  "/user/all/admin",
+  authMiddleware,
+  verifyRoles("admin"),
+  getAllAdmins
+);
+
+router.get(
+  "/user/all/manager",
+  authMiddleware,
+  verifyRoles("admin"),
+  getAllManagers
+);
+
+router.get(
+  "/user/all/stocker",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  getAllStockers
+);
+
+router.get(
+  "/user/all/cashier",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  getAllCashiers
+);
+
 export { router as userRoutes };
