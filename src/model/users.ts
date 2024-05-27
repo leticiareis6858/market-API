@@ -253,7 +253,11 @@ export const getsAllCashiers = async (): Promise<
 
 export const getsWorkerById = async (
   id: number
-): Promise<{ name: string; role: string }> => {
+): Promise<{
+  id: number;
+  name: string;
+  role: string;
+}> => {
   const queryText = "SELECT name, role FROM users WHERE id=$1";
   const { rows } = await pool.query(queryText, [id]);
   return rows[0];
