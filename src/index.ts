@@ -5,12 +5,13 @@ import pool from "./db/pool";
 import { batchesRoutes } from "./routes/batches";
 import { stockRoutes } from "./routes/stock";
 import { userRoutes } from "./routes/users";
+import { purchaseRoutes } from "./routes/purchases";
 
 const app = express();
 
 app.use(express.json());
 
-app.use("/api-market", batchesRoutes, stockRoutes, userRoutes);
+app.use("/api-market", batchesRoutes, stockRoutes, userRoutes, purchaseRoutes);
 
 dotenv.config();
 
@@ -114,6 +115,63 @@ const createUserTable = async () => {
   }
 };
 
+const createPurchasesTable = async () => {
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(
+      `SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'purchases')`
+    );
+    const tableExists = result.rows[0].exists;
+
+    if (!tableExists) {
+      await client.query(`CREATE TABLE IF NOT EXISTS purchases (
+        id SERIAL PRIMARY KEY,
+        client_id INTEGER NOT NULL,
+        cashier_id INTEGER NOT NULL,
+        total_price DECIMAL NOT NULL,
+        FOREIGN KEY (client_id) REFERENCES users(id),
+        FOREIGN KEY (cashier_id) REFERENCES users(id)
+      );`);
+      console.log("Purchases table created!");
+    } else {
+      console.log("Purchases table already exists!");
+    }
+  } catch (error) {
+    console.error("Error while creating purchases table", error);
+  } finally {
+    client.release();
+  }
+};
+
+const createPurchasedProductsTable = async () => {
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(
+      `SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'purchased_products')`
+    );
+    const tableExists = result.rows[0].exists;
+
+    if (!tableExists) {
+      await client.query(`CREATE TABLE IF NOT EXISTS purchased_products (
+        id SERIAL PRIMARY KEY,
+        purchase_id INTEGER NOT NULL,
+        product_id INTEGER NOT NULL,
+        FOREIGN KEY (purchase_id) REFERENCES purchases(id),
+        FOREIGN KEY (product_id) REFERENCES products(id)
+      );`);
+      console.log("Purchased_products table created!");
+    } else {
+      console.log("Purchased_products table already exists!");
+    }
+  } catch (error) {
+    console.error("Error while creating purchased_products table", error);
+  } finally {
+    client.release();
+  }
+};
+
 const start = async function () {
   try {
     await connectToDB();
@@ -122,6 +180,8 @@ const start = async function () {
     await createBatchesTable();
     await createProductsTable();
     await createUserTable();
+    await createPurchasesTable();
+    await createPurchasedProductsTable();
 
     app.listen(port, () => {
       console.log(`Server is listening on port: ${port}`);
