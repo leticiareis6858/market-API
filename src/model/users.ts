@@ -54,7 +54,7 @@ export const authenticatesUser = async (
   return token;
 };
 
-export const createAdmin = async (
+export const createsAdmin = async (
   name: string,
   email: string,
   password: string
@@ -70,7 +70,7 @@ export const createAdmin = async (
   return rows[0];
 };
 
-export const createManager = async (
+export const createsManager = async (
   name: string,
   email: string,
   password: string
@@ -86,7 +86,7 @@ export const createManager = async (
   return rows[0];
 };
 
-export const createStocker = async (
+export const createsStocker = async (
   name: string,
   email: string,
   password: string
@@ -102,7 +102,7 @@ export const createStocker = async (
   return rows[0];
 };
 
-export const createCashier = async (
+export const createsCashier = async (
   name: string,
   email: string,
   password: string
