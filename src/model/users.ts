@@ -120,7 +120,7 @@ export const createsCashier = async (
 
 //TODO: Implement the following functions
 // updatesUser, updatesManager, updatesStocker, updatesCashier -- done
-// deletesUser, deletesManager, deletesStocker, deletesCashier
+// deletesUser, deletesManager, deletesStocker, deletesCashier -- doing
 // updatePassword, updateRole, updateEmail -- done
 // getsAllWorkers, getsAllAdmins, getsAllManagers, getsAllStockers, getsAllCashiers
 // getWorkerById, getAdminById, getManagerById, getStockerById, getCashierById
@@ -188,4 +188,26 @@ export const updatesRole = async (id: number, role: string): Promise<void> => {
 export const updatesName = async (id: number, name: string): Promise<void> => {
   const queryText = "UPDATE users SET name=$2 WHERE id=$1";
   await pool.query(queryText, [id, name]);
+};
+
+//delete:
+
+export const deletesUser = async (id: number): Promise<void> => {
+  const queryText = "DELETE FROM users WHERE id=$1";
+  await pool.query(queryText, [id]);
+};
+
+export const deletesManager = async (id: number): Promise<void> => {
+  const queryText = "DELETE FROM users WHERE id=$1";
+  await pool.query(queryText, [id]);
+};
+
+export const deletesStocker = async (id: number): Promise<void> => {
+  const queryText = "DELETE FROM users WHERE id=$1";
+  await pool.query(queryText, [id]);
+};
+
+export const deletesCashier = async (id: number): Promise<void> => {
+  const queryText = "DELETE FROM users WHERE id=$1";
+  await pool.query(queryText, [id]);
 };
