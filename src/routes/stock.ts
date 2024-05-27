@@ -12,7 +12,7 @@ const router = express.Router();
 router.get(
   "/stock/total",
   authMiddleware,
-  verifyRoles("admin", "manager"),
+  verifyRoles("admin", "stocker"),
   getTotalProductsInStock
 );
 
@@ -20,7 +20,7 @@ router.get(
 router.get(
   "/stock/total-profit",
   authMiddleware,
-  verifyRoles("admin", "manager"),
+  verifyRoles("admin", "stocker"),
   getTotalStockProfit
 );
 
@@ -28,7 +28,7 @@ router.get(
 router.get(
   "/stock/total-by-product",
   authMiddleware,
-  verifyRoles("admin", "manager"),
+  verifyRoles("admin", "stocker"),
   getStockByProductName
 );
 
