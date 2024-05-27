@@ -335,3 +335,12 @@ export const getsCashierByName = async (
   const { rows } = await pool.query(queryText, [name]);
   return rows;
 };
+
+export const getsAdminByName = async (
+  name: string
+): Promise<{ name: string; email: string; role: string }[]> => {
+  const queryText =
+    "SELECT name,email,role FROM users WHERE name=$1 AND role='admin'";
+  const { rows } = await pool.query(queryText, [name]);
+  return rows;
+};
