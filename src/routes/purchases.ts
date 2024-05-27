@@ -1,9 +1,15 @@
 import { Router } from "express";
 import { createPurchase } from "../controller/purchases";
-import { authMiddleware } from "../middleware/authentication";
+import { authMiddleware, verifyRoles } from "../middleware/authentication";
 
 const router = Router();
 
-router.post("/purchase", authMiddleware, createPurchase);
+//create purchase:
+router.post(
+  "/purchase",
+  authMiddleware,
+  verifyRoles("cashier"),
+  createPurchase
+);
 
 export { router as purchaseRoutes };
