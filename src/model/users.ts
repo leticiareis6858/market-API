@@ -36,7 +36,7 @@ export const authenticatesUser = async (
   const user = rows[0];
 
   if (!user) {
-    throw new Error("Invalid creedentials!");
+    throw new Error("Invalid credentials!");
   }
 
   const validPassword = await bcrypt.compare(password, user.password);
@@ -52,4 +52,68 @@ export const authenticatesUser = async (
   const token = jwt.sign(payload, secret, { expiresIn: "1h" });
 
   return token;
+};
+
+export const createAdmin = async (
+  name: string,
+  email: string,
+  password: string
+): Promise<IUser> => {
+  const encryptedPassword = await bcrypt.hash(password, 10);
+  const queryText =
+    "INSERT INTO users(name,email,password,role) VALUES($1,$2,$3,'admin') RETURNING *";
+  const { rows } = await pool.query(queryText, [
+    name,
+    email,
+    encryptedPassword,
+  ]);
+  return rows[0];
+};
+
+export const createManager = async (
+  name: string,
+  email: string,
+  password: string
+): Promise<IUser> => {
+  const encryptedPassword = await bcrypt.hash(password, 10);
+  const queryText =
+    "INSERT INTO users(name,email,password,role) VALUES($1,$2,$3,'manager') RETURNING *";
+  const { rows } = await pool.query(queryText, [
+    name,
+    email,
+    encryptedPassword,
+  ]);
+  return rows[0];
+};
+
+export const createStocker = async (
+  name: string,
+  email: string,
+  password: string
+): Promise<IUser> => {
+  const encryptedPassword = await bcrypt.hash(password, 10);
+  const queryText =
+    "INSERT INTO users(name,email,password,role) VALUES($1,$2,$3,'stocker') RETURNING *";
+  const { rows } = await pool.query(queryText, [
+    name,
+    email,
+    encryptedPassword,
+  ]);
+  return rows[0];
+};
+
+export const createCashier = async (
+  name: string,
+  email: string,
+  password: string
+): Promise<IUser> => {
+  const encryptedPassword = await bcrypt.hash(password, 10);
+  const queryText =
+    "INSERT INTO users(name,email,password,role) VALUES($1,$2,$3,'cashier') RETURNING *";
+  const { rows } = await pool.query(queryText, [
+    name,
+    email,
+    encryptedPassword,
+  ]);
+  return rows[0];
 };
