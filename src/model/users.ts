@@ -212,7 +212,7 @@ export const deletesCashier = async (id: number): Promise<void> => {
 export const getsAllWorkers = async (): Promise<
   { name: string; role: string }[]
 > => {
-  const queryText = "SELECT name, role FROM users";
+  const queryText = "SELECT name, role FROM users WHERE role!='admin'";
   const { rows } = await pool.query(queryText);
   return rows;
 };
