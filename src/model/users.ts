@@ -120,9 +120,9 @@ export const createsCashier = async (
 
 //TODO: Implement the following functions
 // updatesUser, updatesManager, updatesStocker, updatesCashier -- done
-// deletesUser, deletesManager, deletesStocker, deletesCashier -- doing
+// deletesUser, deletesManager, deletesStocker, deletesCashier -- done
 // updatePassword, updateRole, updateEmail -- done
-// getsAllWorkers, getsAllAdmins, getsAllManagers, getsAllStockers, getsAllCashiers
+// getsAllWorkers, getsAllAdmins, getsAllManagers, getsAllStockers, getsAllCashiers -- done
 // getWorkerById, getAdminById, getManagerById, getStockerById, getCashierById
 //getWorkerByName, getManagerByName, getStockerByName, getCashierByName
 
@@ -210,4 +210,46 @@ export const deletesStocker = async (id: number): Promise<void> => {
 export const deletesCashier = async (id: number): Promise<void> => {
   const queryText = "DELETE FROM users WHERE id=$1";
   await pool.query(queryText, [id]);
+};
+
+//get all:
+
+export const getsAllWorkers = async (): Promise<
+  { name: string; role: string }[]
+> => {
+  const queryText = "SELECT name, role FROM users";
+  const { rows } = await pool.query(queryText);
+  return rows;
+};
+
+export const getsAllAdmins = async (): Promise<
+  { name: string; role: string }[]
+> => {
+  const queryText = "SELECT name, role FROM users WHERE role='admin'";
+  const { rows } = await pool.query(queryText);
+  return rows;
+};
+
+export const getsAllManagers = async (): Promise<
+  { name: string; role: string }[]
+> => {
+  const queryText = "SELECT name, role FROM users WHERE role='manager'";
+  const { rows } = await pool.query(queryText);
+  return rows;
+};
+
+export const getsAllStockers = async (): Promise<
+  { name: string; role: string }[]
+> => {
+  const queryText = "SELECT name, role FROM users WHERE role='stocker'";
+  const { rows } = await pool.query(queryText);
+  return rows;
+};
+
+export const getsAllCashiers = async (): Promise<
+  { name: string; role: string }[]
+> => {
+  const queryText = "SELECT name, role FROM users WHERE role='cashier'";
+  const { rows } = await pool.query(queryText);
+  return rows;
 };
