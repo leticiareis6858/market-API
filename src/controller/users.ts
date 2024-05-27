@@ -31,6 +31,7 @@ import {
   getsManagerByName,
   getsStockerByName,
   getsCashierByName,
+  getsAdminByName,
 } from "../model/users";
 
 export const createUser = async (req: Request, res: Response) => {
@@ -358,14 +359,6 @@ export const getAllCashiers = async (req: Request, res: Response) => {
   }
 };
 
-//TODO: Implement the following functions
-// updatesUser, updatesManager, updatesStocker, updatesCashier -- done
-// deletesUser, deletesManager, deletesStocker, deletesCashier -- done
-// updatePassword, updateRole, updateEmail -- done
-// getsAllWorkers, getsAllAdmins, getsAllManagers, getsAllStockers, getsAllCashiers -- done
-// getWorkerById, getAdminById, getManagerById, getStockerById, getCashierById -- done
-//getWorkerByName, getManagerByName, getStockerByName, getCashierByName --
-
 //get by id:
 
 export const getWorkerById = async (req: Request, res: Response) => {
@@ -428,6 +421,73 @@ export const getCashierById = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({
       msg: "Error while getting cashier. Please, try again.",
+      error: error.message || "Unknown error",
+    });
+  }
+};
+
+//get by id:
+
+export const getWorkerByName = async (req: Request, res: Response) => {
+  try {
+    const { name } = req.params;
+    const worker = await getsWorkerByName(name);
+    res.status(200).json(worker);
+  } catch (error: any) {
+    res.status(500).json({
+      msg: "Error while getting worker. Please, try again.",
+      error: error.message || "Unknown error",
+    });
+  }
+};
+
+export const getManagerByName = async (req: Request, res: Response) => {
+  try {
+    const { name } = req.params;
+    const manager = await getsManagerByName(name);
+    res.status(200).json(manager);
+  } catch (error: any) {
+    res.status(500).json({
+      msg: "Error while getting manager. Please, try again.",
+      error: error.message || "Unknown error",
+    });
+  }
+};
+
+export const getStockerByName = async (req: Request, res: Response) => {
+  try {
+    const { name } = req.params;
+    const stocker = await getsStockerByName(name);
+    res.status(200).json(stocker);
+  } catch (error: any) {
+    res.status(500).json({
+      msg: "Error while getting stocker. Please, try again.",
+      error: error.message || "Unknown error",
+    });
+  }
+};
+
+export const getCashierByName = async (req: Request, res: Response) => {
+  try {
+    const { name } = req.params;
+    const cashier = await getsCashierByName(name);
+    res.status(200).json(cashier);
+  } catch (error: any) {
+    res.status(500).json({
+      msg: "Error while getting cashier. Please, try again.",
+      error: error.message || "Unknown error",
+    });
+  }
+};
+
+export const getAdminByName = async (req: Request, res: Response) => {
+  try {
+    const { name } = req.params;
+    const admin = await getsAdminByName(name);
+    res.status(200).json(admin);
+  } catch (error: any) {
+    res.status(500).json({
+      msg: "Error while getting admin. Please, try again.",
       error: error.message || "Unknown error",
     });
   }
