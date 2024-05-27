@@ -117,3 +117,70 @@ export const createsCashier = async (
   ]);
   return rows[0];
 };
+
+//TODO: Implement the following functions
+// updatesUser, updatesManager, updatesStocker, updatesCashier -- done
+// deletesUser, deletesManager, deletesStocker, deletesCashier
+// updatePassword, updateRole, updateEmail -- done
+// getsAllWorkers, getsAllAdmins, getsAllManagers, getsAllStockers, getsAllCashiers
+// getWorkerById, getAdminById, getManagerById, getStockerById, getCashierById
+//getWorkerByName, getManagerByName, getStockerByName, getCashierByName
+
+//update:
+
+export const updatesUser = async (
+  id: number,
+  name: string,
+  email: string
+): Promise<void> => {
+  const queryText = "UPDATE users SET name=$2, email=$3 WHERE id=$1";
+  await pool.query(queryText, [id, name, email]);
+};
+
+export const updatesManager = async (
+  id: number,
+  name: string,
+  email: string
+): Promise<void> => {
+  const queryText = "UPDATE users SET name=$2, email=$3 WHERE id=$1";
+  await pool.query(queryText, [id, name, email]);
+};
+
+export const updatesStocker = async (
+  id: number,
+  name: string,
+  email: string
+): Promise<void> => {
+  const queryText = "UPDATE users SET name=$2, email=$3 WHERE id=$1";
+  await pool.query(queryText, [id, name, email]);
+};
+
+export const updatesCashier = async (
+  id: number,
+  name: string,
+  email: string
+): Promise<void> => {
+  const queryText = "UPDATE users SET name=$2, email=$3 WHERE id=$1";
+  await pool.query(queryText, [id, name, email]);
+};
+
+export const updatesEmail = async (
+  id: number,
+  email: string
+): Promise<void> => {
+  const queryText = "UPDATE users SET email=$2 WHERE id=$1";
+  await pool.query(queryText, [id, email]);
+};
+
+export const updatesPassword = async (
+  id: number,
+  password: string
+): Promise<void> => {
+  const queryText = "UPDATE users SET password=$2 WHERE id=$1";
+  await pool.query(queryText, [id, password]);
+};
+
+export const updatesRole = async (id: number, role: string): Promise<void> => {
+  const queryText = "UPDATE users SET role=$2 WHERE id=$1";
+  await pool.query(queryText, [id, role]);
+};
