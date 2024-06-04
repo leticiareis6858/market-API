@@ -140,8 +140,10 @@ export const createCashier = async (req: Request, res: Response) => {
 
 export const updateRole = async (req: Request, res: Response) => {
   try {
-    const { id, role } = req.body;
-    const updatedRole = await updatesRole(id, role);
+    const { id } = req.params;
+    const userId = Number(id);
+    const { role } = req.body;
+    const updatedRole = await updatesRole(userId, role);
     res.status(200).json({ msg: "Role updated!", user: updatedRole });
   } catch (error: any) {
     res.status(500).json({
@@ -153,7 +155,9 @@ export const updateRole = async (req: Request, res: Response) => {
 
 export const updatePassword = async (req: Request, res: Response) => {
   try {
-    const { id, password } = req.body;
+    const { id } = req.params;
+    const userId = Number(id);
+    const { password } = req.body;
 
     if ((req as any).user.id !== id && (req as any).user.role != "admin") {
       return res
@@ -161,7 +165,7 @@ export const updatePassword = async (req: Request, res: Response) => {
         .json({ msg: "You can't update other user's password" });
     }
 
-    await updatesPassword(id, password);
+    await updatesPassword(userId, password);
     res.status(200).json({ msg: "Password updated!" });
   } catch (error: any) {
     res.status(500).json({
@@ -173,7 +177,9 @@ export const updatePassword = async (req: Request, res: Response) => {
 
 export const updateEmail = async (req: Request, res: Response) => {
   try {
-    const { id, email } = req.body;
+    const { id } = req.params;
+    const userId = Number(id);
+    const { email } = req.body;
 
     if ((req as any).user.id !== id && (req as any).user.role != "admin") {
       return res
@@ -181,7 +187,7 @@ export const updateEmail = async (req: Request, res: Response) => {
         .json({ msg: "You can't update other user's email" });
     }
 
-    await updatesEmail(id, email);
+    await updatesEmail(userId, email);
     res.status(200).json({ msg: "Email updated!" });
   } catch (error: any) {
     res.status(500).json({
@@ -193,8 +199,10 @@ export const updateEmail = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
   try {
-    const { id, name, email } = req.body;
-    const updatedUser = await updatesUser(id, name, email);
+    const { id } = req.params;
+    const userId = Number(id);
+    const { name, email } = req.body;
+    const updatedUser = await updatesUser(userId, name, email);
     res.status(200).json({ msg: "User updated!", user: updatedUser });
   } catch (error: any) {
     res.status(500).json({
@@ -206,8 +214,10 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const updateManager = async (req: Request, res: Response) => {
   try {
-    const { id, name, email } = req.body;
-    const updatedManager = await updatesManager(id, name, email);
+    const { id } = req.params;
+    const userId = Number(id);
+    const { name, email } = req.body;
+    const updatedManager = await updatesManager(userId, name, email);
     res.status(200).json({ msg: "Manager updated!", manager: updatedManager });
   } catch (error: any) {
     res.status(500).json({
@@ -219,8 +229,10 @@ export const updateManager = async (req: Request, res: Response) => {
 
 export const updateStocker = async (req: Request, res: Response) => {
   try {
-    const { id, name, email } = req.body;
-    const updatedStocker = await updatesStocker(id, name, email);
+    const { id } = req.params;
+    const userId = Number(id);
+    const { name, email } = req.body;
+    const updatedStocker = await updatesStocker(userId, name, email);
     res.status(200).json({ msg: "Stocker updated!", stocker: updatedStocker });
   } catch (error: any) {
     res.status(500).json({
@@ -232,8 +244,10 @@ export const updateStocker = async (req: Request, res: Response) => {
 
 export const updateCashier = async (req: Request, res: Response) => {
   try {
-    const { id, name, email } = req.body;
-    const updatedCashier = await updatesCashier(id, name, email);
+    const { id } = req.params;
+    const userId = Number(id);
+    const { name, email } = req.body;
+    const updatedCashier = await updatesCashier(userId, name, email);
     res.status(200).json({ msg: "Cashier updated!", cashier: updatedCashier });
   } catch (error: any) {
     res.status(500).json({
@@ -247,8 +261,9 @@ export const updateCashier = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const { id } = req.body;
-    await deletesUser(id);
+    const { id } = req.params;
+    const userId = Number(id);
+    await deletesUser(userId);
     res.status(200).json({ msg: "User deleted!" });
   } catch (error: any) {
     res.status(500).json({
@@ -260,8 +275,9 @@ export const deleteUser = async (req: Request, res: Response) => {
 
 export const deleteManager = async (req: Request, res: Response) => {
   try {
-    const { id } = req.body;
-    await deletesManager(id);
+    const { id } = req.params;
+    const userId = Number(id);
+    await deletesManager(userId);
     res.status(200).json({ msg: "Manager deleted!" });
   } catch (error: any) {
     res.status(500).json({
@@ -273,8 +289,9 @@ export const deleteManager = async (req: Request, res: Response) => {
 
 export const deleteStocker = async (req: Request, res: Response) => {
   try {
-    const { id } = req.body;
-    await deletesStocker(id);
+    const { id } = req.params;
+    const userId = Number(id);
+    await deletesStocker(userId);
     res.status(200).json({ msg: "Stocker deleted!" });
   } catch (error: any) {
     res.status(500).json({
@@ -286,8 +303,9 @@ export const deleteStocker = async (req: Request, res: Response) => {
 
 export const deleteCashier = async (req: Request, res: Response) => {
   try {
-    const { id } = req.body;
-    await deletesCashier(id);
+    const { id } = req.params;
+    const userId = Number(id);
+    await deletesCashier(userId);
     res.status(200).json({ msg: "Cashier deleted!" });
   } catch (error: any) {
     res.status(500).json({
