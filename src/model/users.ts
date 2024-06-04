@@ -125,8 +125,23 @@ export const updatesUser = async (
   name: string,
   email: string
 ): Promise<void> => {
-  const queryText = "UPDATE users SET name=$2, email=$3 WHERE id=$1";
-  await pool.query(queryText, [id, name, email]);
+  if (!email) {
+    const queryText = "UPDATE users SET name=$2 WHERE id=$1";
+    await pool.query(queryText, [id, name]);
+  }
+  if (!name) {
+    const queryText = "UPDATE users SET email=$2 WHERE id=$1";
+    await pool.query(queryText, [id, email]);
+  }
+
+  if (!name && !email) {
+    throw new Error("Please provide a name or email to update!");
+  }
+
+  if (name && email) {
+    const queryText = "UPDATE users SET name=$2, email=$3 WHERE id=$1";
+    await pool.query(queryText, [id, name, email]);
+  }
 };
 
 export const updatesManager = async (
@@ -134,9 +149,25 @@ export const updatesManager = async (
   name: string,
   email: string
 ): Promise<void> => {
-  const queryText =
-    "UPDATE users SET name=$2, email=$3 WHERE id=$1 AND role='manager'";
-  await pool.query(queryText, [id, name, email]);
+  if (!email) {
+    const queryText = "UPDATE users SET name=$2 WHERE id=$1 AND role='manager'";
+    await pool.query(queryText, [id, name]);
+  }
+  if (!name) {
+    const queryText =
+      "UPDATE users SET email=$2 WHERE id=$1 AND role='manager'";
+    await pool.query(queryText, [id, email]);
+  }
+
+  if (!name && !email) {
+    throw new Error("Please provide a name or email to update!");
+  }
+
+  if (name && email) {
+    const queryText =
+      "UPDATE users SET name=$2, email=$3 WHERE id=$1 AND role='manager'";
+    await pool.query(queryText, [id, name, email]);
+  }
 };
 
 export const updatesStocker = async (
@@ -144,9 +175,25 @@ export const updatesStocker = async (
   name: string,
   email: string
 ): Promise<void> => {
-  const queryText =
-    "UPDATE users SET name=$2, email=$3 WHERE id=$1 AND role='stocker'";
-  await pool.query(queryText, [id, name, email]);
+  if (!email) {
+    const queryText = "UPDATE users SET name=$2 WHERE id=$1 AND role='stocker'";
+    await pool.query(queryText, [id, name]);
+  }
+  if (!name) {
+    const queryText =
+      "UPDATE users SET email=$2 WHERE id=$1 AND role='stocker'";
+    await pool.query(queryText, [id, email]);
+  }
+
+  if (!name && !email) {
+    throw new Error("Please provide a name or email to update!");
+  }
+
+  if (name && email) {
+    const queryText =
+      "UPDATE users SET name=$2, email=$3 WHERE id=$1 AND role='stocker'";
+    await pool.query(queryText, [id, name, email]);
+  }
 };
 
 export const updatesCashier = async (
@@ -154,9 +201,25 @@ export const updatesCashier = async (
   name: string,
   email: string
 ): Promise<void> => {
-  const queryText =
-    "UPDATE users SET name=$2, email=$3 WHERE id=$1 AND role='cashier'";
-  await pool.query(queryText, [id, name, email]);
+  if (!email) {
+    const queryText = "UPDATE users SET name=$2 WHERE id=$1 AND role='cashier'";
+    await pool.query(queryText, [id, name]);
+  }
+  if (!name) {
+    const queryText =
+      "UPDATE users SET email=$2 WHERE id=$1 AND role='cashier'";
+    await pool.query(queryText, [id, email]);
+  }
+
+  if (!name && !email) {
+    throw new Error("Please provide a name or email to update!");
+  }
+
+  if (name && email) {
+    const queryText =
+      "UPDATE users SET name=$2, email=$3 WHERE id=$1 AND role='cashier''";
+    await pool.query(queryText, [id, name, email]);
+  }
 };
 
 export const updatesEmail = async (
