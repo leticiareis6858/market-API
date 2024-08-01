@@ -38,15 +38,10 @@ export const createUser = async (req: Request, res: Response) => {
   try {
     const { name, email, password, role } = req.body;
 
-    if (
-      role != "admin" &&
-      role != "cashier" &&
-      role != "stocker" &&
-      role != "manager"
-    ) {
+    if (role != "cashier" && role != "stocker" && role != "manager") {
       return res.status(400).json({
         message:
-          "Please provide a valid role. Acepted roles: admin, cashier, stocker, manager.",
+          "Please provide a valid role. Acepted roles: cashier, stocker, manager.",
       });
     }
     const newUser = await createsUser(name, email, password, role);
@@ -86,48 +81,6 @@ export const createAdmin = async (req: Request, res: Response) => {
 
     const newUser = await createsAdmin(name, email, password);
     res.status(201).json({ msg: "Admin user created!", user: newUser });
-  } catch (error: any) {
-    res.status(500).json({
-      msg: "Error while creating user. Please, try again.",
-      error: error.message || "Unknown error",
-    });
-  }
-};
-
-export const createManager = async (req: Request, res: Response) => {
-  try {
-    const { name, email, password } = req.body;
-
-    const newUser = await createsManager(name, email, password);
-    res.status(201).json({ msg: "Manager user created!", user: newUser });
-  } catch (error: any) {
-    res.status(500).json({
-      msg: "Error while creating user. Please, try again.",
-      error: error.message || "Unknown error",
-    });
-  }
-};
-
-export const createStocker = async (req: Request, res: Response) => {
-  try {
-    const { name, email, password } = req.body;
-
-    const newUser = await createsStocker(name, email, password);
-    res.status(201).json({ msg: "Stocker user created!", user: newUser });
-  } catch (error: any) {
-    res.status(500).json({
-      msg: "Error while creating user. Please, try again.",
-      error: error.message || "Unknown error",
-    });
-  }
-};
-
-export const createCashier = async (req: Request, res: Response) => {
-  try {
-    const { name, email, password } = req.body;
-
-    const newUser = await createsCashier(name, email, password);
-    res.status(201).json({ msg: "Cashier user created!", user: newUser });
   } catch (error: any) {
     res.status(500).json({
       msg: "Error while creating user. Please, try again.",
@@ -212,51 +165,6 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-export const updateManager = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const userId = Number(id);
-    const { name, email } = req.body;
-    const updatedManager = await updatesManager(userId, name, email);
-    res.status(200).json({ msg: "Manager updated!", manager: updatedManager });
-  } catch (error: any) {
-    res.status(500).json({
-      msg: "Error while updating manager. Please, try again.",
-      error: error.message || "Unknown error",
-    });
-  }
-};
-
-export const updateStocker = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const userId = Number(id);
-    const { name, email } = req.body;
-    const updatedStocker = await updatesStocker(userId, name, email);
-    res.status(200).json({ msg: "Stocker updated!", stocker: updatedStocker });
-  } catch (error: any) {
-    res.status(500).json({
-      msg: "Error while updating stocker. Please, try again.",
-      error: error.message || "Unknown error",
-    });
-  }
-};
-
-export const updateCashier = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const userId = Number(id);
-    const { name, email } = req.body;
-    const updatedCashier = await updatesCashier(userId, name, email);
-    res.status(200).json({ msg: "Cashier updated!", cashier: updatedCashier });
-  } catch (error: any) {
-    res.status(500).json({
-      msg: "Error while updating cashier. Please, try again.",
-      error: error.message || "Unknown error",
-    });
-  }
-};
-
 //delete:
 
 export const deleteUser = async (req: Request, res: Response) => {
@@ -268,48 +176,6 @@ export const deleteUser = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({
       msg: "Error while deleting user. Please, try again.",
-      error: error.message || "Unknown error",
-    });
-  }
-};
-
-export const deleteManager = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const userId = Number(id);
-    await deletesManager(userId);
-    res.status(200).json({ msg: "Manager deleted!" });
-  } catch (error: any) {
-    res.status(500).json({
-      msg: "Error while deleting manager. Please, try again.",
-      error: error.message || "Unknown error",
-    });
-  }
-};
-
-export const deleteStocker = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const userId = Number(id);
-    await deletesStocker(userId);
-    res.status(200).json({ msg: "Stocker deleted!" });
-  } catch (error: any) {
-    res.status(500).json({
-      msg: "Error while deleting stocker. Please, try again.",
-      error: error.message || "Unknown error",
-    });
-  }
-};
-
-export const deleteCashier = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const userId = Number(id);
-    await deletesCashier(userId);
-    res.status(200).json({ msg: "Cashier deleted!" });
-  } catch (error: any) {
-    res.status(500).json({
-      msg: "Error while deleting cashier. Please, try again.",
       error: error.message || "Unknown error",
     });
   }
@@ -454,58 +320,6 @@ export const getWorkerByName = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({
       msg: "Error while getting worker. Please, try again.",
-      error: error.message || "Unknown error",
-    });
-  }
-};
-
-export const getManagerByName = async (req: Request, res: Response) => {
-  try {
-    const { name } = req.params;
-    const manager = await getsManagerByName(name);
-    res.status(200).json(manager);
-  } catch (error: any) {
-    res.status(500).json({
-      msg: "Error while getting manager. Please, try again.",
-      error: error.message || "Unknown error",
-    });
-  }
-};
-
-export const getStockerByName = async (req: Request, res: Response) => {
-  try {
-    const { name } = req.params;
-    const stocker = await getsStockerByName(name);
-    res.status(200).json(stocker);
-  } catch (error: any) {
-    res.status(500).json({
-      msg: "Error while getting stocker. Please, try again.",
-      error: error.message || "Unknown error",
-    });
-  }
-};
-
-export const getCashierByName = async (req: Request, res: Response) => {
-  try {
-    const { name } = req.params;
-    const cashier = await getsCashierByName(name);
-    res.status(200).json(cashier);
-  } catch (error: any) {
-    res.status(500).json({
-      msg: "Error while getting cashier. Please, try again.",
-      error: error.message || "Unknown error",
-    });
-  }
-};
-
-export const getAdminByName = async (req: Request, res: Response) => {
-  try {
-    const { name } = req.params;
-    const admin = await getsAdminByName(name);
-    res.status(200).json(admin);
-  } catch (error: any) {
-    res.status(500).json({
-      msg: "Error while getting admin. Please, try again.",
       error: error.message || "Unknown error",
     });
   }

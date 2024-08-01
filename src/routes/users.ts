@@ -3,17 +3,8 @@ import {
   createUser,
   userLogin,
   createAdmin,
-  createManager,
-  createStocker,
-  createCashier,
   updateUser,
-  updateManager,
-  updateStocker,
-  updateCashier,
   deleteUser,
-  deleteManager,
-  deleteStocker,
-  deleteCashier,
   updatePassword,
   updateRole,
   updateEmail,
@@ -28,16 +19,12 @@ import {
   getStockerById,
   getCashierById,
   getWorkerByName,
-  getManagerByName,
-  getStockerByName,
-  getCashierByName,
-  getAdminByName,
 } from "../controller/users";
 import { authMiddleware, verifyRoles } from "../middleware/authentication";
 
 const router = express.Router();
 
-router.post("/user/register", authMiddleware, verifyRoles("admin"), createUser);
+//login:
 
 router.post("/user/login", userLogin);
 
@@ -46,24 +33,10 @@ router.post("/user/login", userLogin);
 router.post("/user/register/admin", createAdmin);
 
 router.post(
-  "/user/register/manager",
+  "/user/register/worker",
   authMiddleware,
   verifyRoles("admin"),
-  createManager
-);
-
-router.post(
-  "/user/register/stocker",
-  authMiddleware,
-  verifyRoles("admin", "manager"),
-  createStocker
-);
-
-router.post(
-  "/user/register/cashier",
-  authMiddleware,
-  verifyRoles("admin", "manager"),
-  createCashier
+  createUser
 );
 
 //update:
@@ -71,29 +44,8 @@ router.post(
 router.patch(
   "/user/update/:id",
   authMiddleware,
-  verifyRoles("admin"),
+  verifyRoles("admin", "manager"),
   updateUser
-);
-
-router.patch(
-  "/user/update/manager/:id",
-  authMiddleware,
-  verifyRoles("admin"),
-  updateManager
-);
-
-router.patch(
-  "/user/update/stocker/:id",
-  authMiddleware,
-  verifyRoles("admin", "manager"),
-  updateStocker
-);
-
-router.patch(
-  "/user/update/cashier/:id",
-  authMiddleware,
-  verifyRoles("admin", "manager"),
-  updateCashier
 );
 
 //update password, role, email:
@@ -114,29 +66,8 @@ router.patch("/user/update/email/:id", authMiddleware, updateEmail);
 router.delete(
   "/user/delete/:id",
   authMiddleware,
-  verifyRoles("admin"),
+  verifyRoles("admin", "manager"),
   deleteUser
-);
-
-router.delete(
-  "/user/delete/manager/:id",
-  authMiddleware,
-  verifyRoles("admin"),
-  deleteManager
-);
-
-router.delete(
-  "/user/delete/stocker/:id",
-  authMiddleware,
-  verifyRoles("admin", "manager"),
-  deleteStocker
-);
-
-router.delete(
-  "/user/delete/cashier/:id",
-  authMiddleware,
-  verifyRoles("admin", "manager"),
-  deleteCashier
 );
 
 //get all:
@@ -208,36 +139,8 @@ router.get(
 router.get(
   "/user/:name",
   authMiddleware,
-  verifyRoles("admin"),
+  verifyRoles("admin", "manager"),
   getWorkerByName
-);
-
-router.get(
-  "user/admin/:name",
-  authMiddleware,
-  verifyRoles("admin"),
-  getAdminByName
-);
-
-router.get(
-  "user/manager/:name",
-  authMiddleware,
-  verifyRoles("admin"),
-  getManagerByName
-);
-
-router.get(
-  "user/stocker/:name",
-  authMiddleware,
-  verifyRoles("admin", "manager"),
-  getStockerByName
-);
-
-router.get(
-  "user/cashier/:name",
-  authMiddleware,
-  verifyRoles("admin", "manager"),
-  getCashierByName
 );
 
 export { router as userRoutes };

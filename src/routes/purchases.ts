@@ -8,7 +8,7 @@ const router = Router();
 router.post(
   "/purchase",
   authMiddleware,
-  verifyRoles("cashier"),
+  verifyRoles("admin", "cashier"),
   createPurchase
 );
 

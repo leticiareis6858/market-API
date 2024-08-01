@@ -20,7 +20,7 @@ router.get(
 router.get(
   "/stock/total-profit",
   authMiddleware,
-  verifyRoles("admin", "stocker"),
+  verifyRoles("admin", "manager", "stocker"),
   getTotalStockProfit
 );
 
