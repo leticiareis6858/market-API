@@ -275,7 +275,7 @@ export const deletesCashier = async (id: number): Promise<void> => {
 export const getsAllWorkers = async (): Promise<
   { name: string; role: string }[]
 > => {
-  const queryText = "SELECT name, role FROM users WHERE role!='admin'";
+  const queryText = "SELECT id, name, role FROM users WHERE role!='admin'";
   const { rows } = await pool.query(queryText);
   return rows;
 };
@@ -283,7 +283,7 @@ export const getsAllWorkers = async (): Promise<
 export const getsAllAdmins = async (): Promise<
   { name: string; role: string }[]
 > => {
-  const queryText = "SELECT name, role FROM users WHERE role='admin'";
+  const queryText = "SELECT id, name, role FROM users WHERE role='admin'";
   const { rows } = await pool.query(queryText);
   return rows;
 };
@@ -291,7 +291,7 @@ export const getsAllAdmins = async (): Promise<
 export const getsAllManagers = async (): Promise<
   { name: string; role: string }[]
 > => {
-  const queryText = "SELECT name, role FROM users WHERE role='manager'";
+  const queryText = "SELECT id, name, role FROM users WHERE role='manager'";
   const { rows } = await pool.query(queryText);
   return rows;
 };
@@ -299,7 +299,7 @@ export const getsAllManagers = async (): Promise<
 export const getsAllStockers = async (): Promise<
   { name: string; role: string }[]
 > => {
-  const queryText = "SELECT name, role FROM users WHERE role='stocker'";
+  const queryText = "SELECT id, name, role FROM users WHERE role='stocker'";
   const { rows } = await pool.query(queryText);
   return rows;
 };
@@ -307,7 +307,7 @@ export const getsAllStockers = async (): Promise<
 export const getsAllCashiers = async (): Promise<
   { name: string; role: string }[]
 > => {
-  const queryText = "SELECT name, role FROM users WHERE role='cashier'";
+  const queryText = "SELECT id, name, role FROM users WHERE role='cashier'";
   const { rows } = await pool.query(queryText);
   return rows;
 };
@@ -321,7 +321,7 @@ export const getsWorkerById = async (
   name: string;
   role: string;
 }> => {
-  const queryText = "SELECT name, role FROM users WHERE id=$1";
+  const queryText = "SELECT id, name, role FROM users WHERE id=$1";
   const { rows } = await pool.query(queryText, [id]);
   return rows[0];
 };
@@ -330,7 +330,7 @@ export const getsAdminById = async (
   id: number
 ): Promise<{ name: string; email: string; role: string }> => {
   const queryText =
-    "SELECT name, email, role FROM users WHERE id=$1 AND role='admin'";
+    "SELECT id, name, email, role FROM users WHERE id=$1 AND role='admin'";
   const { rows } = await pool.query(queryText, [id]);
   return rows[0];
 };
@@ -339,7 +339,7 @@ export const getsManagerById = async (
   id: number
 ): Promise<{ name: string; email: string; role: string }> => {
   const queryText =
-    "SELECT name, email, role FROM users WHERE id=$1 AND role='manager'";
+    "SELECT id, name, email, role FROM users WHERE id=$1 AND role='manager'";
   const { rows } = await pool.query(queryText, [id]);
   return rows[0];
 };
@@ -348,7 +348,7 @@ export const getsStockerById = async (
   id: number
 ): Promise<{ name: string; email: string; role: string }> => {
   const queryText =
-    "SELECT name, email, role FROM users WHERE id=$1 AND role='stocker'";
+    "SELECT id, name, email, role FROM users WHERE id=$1 AND role='stocker'";
   const { rows } = await pool.query(queryText, [id]);
   return rows[0];
 };
@@ -357,7 +357,7 @@ export const getsCashierById = async (
   id: number
 ): Promise<{ name: string; email: string; role: string }> => {
   const queryText =
-    "SELECT name, email, role FROM users WHERE id=$1 AND role='cashier'";
+    "SELECT id, name, email, role FROM users WHERE id=$1 AND role='cashier'";
   const { rows } = await pool.query(queryText, [id]);
   return rows[0];
 };
@@ -367,7 +367,7 @@ export const getsCashierById = async (
 export const getsWorkerByName = async (
   name: string
 ): Promise<{ name: string; email: string; role: string }[]> => {
-  const queryText = "SELECT name, email, role FROM users WHERE name=$1";
+  const queryText = "SELECT id, name, email, role FROM users WHERE name=$1";
   const { rows } = await pool.query(queryText, [name]);
   return rows;
 };
@@ -376,7 +376,7 @@ export const getsManagerByName = async (
   name: string
 ): Promise<{ name: string; email: string; role: string }[]> => {
   const queryText =
-    "SELECT name, email, role FROM users WHERE name=$1 AND role='manager'";
+    "SELECT id, name, email, role FROM users WHERE name=$1 AND role='manager'";
   const { rows } = await pool.query(queryText, [name]);
   return rows;
 };
@@ -385,7 +385,7 @@ export const getsStockerByName = async (
   name: string
 ): Promise<{ name: string; email: string; role: string }[]> => {
   const queryText =
-    "SELECT name, email, role FROM users WHERE name=$1 AND role='stocker'";
+    "SELECT id, name, email, role FROM users WHERE name=$1 AND role='stocker'";
   const { rows } = await pool.query(queryText, [name]);
   return rows;
 };
@@ -403,7 +403,7 @@ export const getsAdminByName = async (
   name: string
 ): Promise<{ name: string; email: string; role: string }[]> => {
   const queryText =
-    "SELECT name,email,role FROM users WHERE name=$1 AND role='admin'";
+    "SELECT id, name, email, role FROM users WHERE name=$1 AND role='admin'";
   const { rows } = await pool.query(queryText, [name]);
   return rows;
 };
