@@ -35,7 +35,7 @@ router.post("/user/register/admin", createAdmin);
 router.post(
   "/user/register/worker",
   authMiddleware,
-  verifyRoles("admin"),
+  verifyRoles("admin", "manager"),
   createUser
 );
 
