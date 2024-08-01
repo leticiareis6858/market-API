@@ -136,11 +136,10 @@ router.get(
 
 //get by name:
 
-router.get(
-  "/user/:name",
+router.post(
+  "/user/name",
   authMiddleware,
   verifyRoles("admin", "manager"),
   getWorkerByName
 );
-
 export { router as userRoutes };

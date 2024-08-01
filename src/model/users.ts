@@ -367,6 +367,10 @@ export const getsCashierById = async (
 export const getsWorkerByName = async (
   name: string
 ): Promise<{ name: string; email: string; role: string }[]> => {
+  if (!name || typeof name !== "string") {
+    throw new Error("Invalid input. 'name' must be a non-empty string.");
+  }
+
   const queryText = "SELECT id, name, email, role FROM users WHERE name=$1";
   const { rows } = await pool.query(queryText, [name]);
   return rows;
