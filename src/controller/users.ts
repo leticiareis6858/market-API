@@ -3,17 +3,8 @@ import {
   createsUser,
   authenticatesUser,
   createsAdmin,
-  createsManager,
-  createsStocker,
-  createsCashier,
   updatesUser,
-  updatesManager,
-  updatesStocker,
-  updatesCashier,
   deletesUser,
-  deletesManager,
-  deletesStocker,
-  deletesCashier,
   updatesPassword,
   updatesRole,
   updatesEmail,
@@ -28,10 +19,6 @@ import {
   getsStockerById,
   getsCashierById,
   getsWorkerByName,
-  getsManagerByName,
-  getsStockerByName,
-  getsCashierByName,
-  getsAdminByName,
 } from "../model/users";
 
 export const createUser = async (req: Request, res: Response) => {

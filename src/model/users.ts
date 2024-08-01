@@ -70,54 +70,6 @@ export const createsAdmin = async (
   return rows[0];
 };
 
-export const createsManager = async (
-  name: string,
-  email: string,
-  password: string
-): Promise<IUser> => {
-  const encryptedPassword = await bcrypt.hash(password, 10);
-  const queryText =
-    "INSERT INTO users(name,email,password,role) VALUES($1,$2,$3,'manager') RETURNING *";
-  const { rows } = await pool.query(queryText, [
-    name,
-    email,
-    encryptedPassword,
-  ]);
-  return rows[0];
-};
-
-export const createsStocker = async (
-  name: string,
-  email: string,
-  password: string
-): Promise<IUser> => {
-  const encryptedPassword = await bcrypt.hash(password, 10);
-  const queryText =
-    "INSERT INTO users(name,email,password,role) VALUES($1,$2,$3,'stocker') RETURNING *";
-  const { rows } = await pool.query(queryText, [
-    name,
-    email,
-    encryptedPassword,
-  ]);
-  return rows[0];
-};
-
-export const createsCashier = async (
-  name: string,
-  email: string,
-  password: string
-): Promise<IUser> => {
-  const encryptedPassword = await bcrypt.hash(password, 10);
-  const queryText =
-    "INSERT INTO users(name,email,password,role) VALUES($1,$2,$3,'cashier') RETURNING *";
-  const { rows } = await pool.query(queryText, [
-    name,
-    email,
-    encryptedPassword,
-  ]);
-  return rows[0];
-};
-
 //update:
 
 export const updatesUser = async (
@@ -140,84 +92,6 @@ export const updatesUser = async (
 
   if (name && email) {
     const queryText = "UPDATE users SET name=$2, email=$3 WHERE id=$1";
-    await pool.query(queryText, [id, name, email]);
-  }
-};
-
-export const updatesManager = async (
-  id: number,
-  name: string,
-  email: string
-): Promise<void> => {
-  if (!email) {
-    const queryText = "UPDATE users SET name=$2 WHERE id=$1 AND role='manager'";
-    await pool.query(queryText, [id, name]);
-  }
-  if (!name) {
-    const queryText =
-      "UPDATE users SET email=$2 WHERE id=$1 AND role='manager'";
-    await pool.query(queryText, [id, email]);
-  }
-
-  if (!name && !email) {
-    throw new Error("Please provide a name or email to update!");
-  }
-
-  if (name && email) {
-    const queryText =
-      "UPDATE users SET name=$2, email=$3 WHERE id=$1 AND role='manager'";
-    await pool.query(queryText, [id, name, email]);
-  }
-};
-
-export const updatesStocker = async (
-  id: number,
-  name: string,
-  email: string
-): Promise<void> => {
-  if (!email) {
-    const queryText = "UPDATE users SET name=$2 WHERE id=$1 AND role='stocker'";
-    await pool.query(queryText, [id, name]);
-  }
-  if (!name) {
-    const queryText =
-      "UPDATE users SET email=$2 WHERE id=$1 AND role='stocker'";
-    await pool.query(queryText, [id, email]);
-  }
-
-  if (!name && !email) {
-    throw new Error("Please provide a name or email to update!");
-  }
-
-  if (name && email) {
-    const queryText =
-      "UPDATE users SET name=$2, email=$3 WHERE id=$1 AND role='stocker'";
-    await pool.query(queryText, [id, name, email]);
-  }
-};
-
-export const updatesCashier = async (
-  id: number,
-  name: string,
-  email: string
-): Promise<void> => {
-  if (!email) {
-    const queryText = "UPDATE users SET name=$2 WHERE id=$1 AND role='cashier'";
-    await pool.query(queryText, [id, name]);
-  }
-  if (!name) {
-    const queryText =
-      "UPDATE users SET email=$2 WHERE id=$1 AND role='cashier'";
-    await pool.query(queryText, [id, email]);
-  }
-
-  if (!name && !email) {
-    throw new Error("Please provide a name or email to update!");
-  }
-
-  if (name && email) {
-    const queryText =
-      "UPDATE users SET name=$2, email=$3 WHERE id=$1 AND role='cashier''";
     await pool.query(queryText, [id, name, email]);
   }
 };
@@ -252,21 +126,6 @@ export const updatesName = async (id: number, name: string): Promise<void> => {
 
 export const deletesUser = async (id: number): Promise<void> => {
   const queryText = "DELETE FROM users WHERE id=$1";
-  await pool.query(queryText, [id]);
-};
-
-export const deletesManager = async (id: number): Promise<void> => {
-  const queryText = "DELETE FROM users WHERE id=$1 AND role='manager'";
-  await pool.query(queryText, [id]);
-};
-
-export const deletesStocker = async (id: number): Promise<void> => {
-  const queryText = "DELETE FROM users WHERE id=$1 AND role='stocker'";
-  await pool.query(queryText, [id]);
-};
-
-export const deletesCashier = async (id: number): Promise<void> => {
-  const queryText = "DELETE FROM users WHERE id=$1 AND role='cashier'";
   await pool.query(queryText, [id]);
 };
 
@@ -372,42 +231,6 @@ export const getsWorkerByName = async (
   }
 
   const queryText = "SELECT id, name, email, role FROM users WHERE name=$1";
-  const { rows } = await pool.query(queryText, [name]);
-  return rows;
-};
-
-export const getsManagerByName = async (
-  name: string
-): Promise<{ name: string; email: string; role: string }[]> => {
-  const queryText =
-    "SELECT id, name, email, role FROM users WHERE name=$1 AND role='manager'";
-  const { rows } = await pool.query(queryText, [name]);
-  return rows;
-};
-
-export const getsStockerByName = async (
-  name: string
-): Promise<{ name: string; email: string; role: string }[]> => {
-  const queryText =
-    "SELECT id, name, email, role FROM users WHERE name=$1 AND role='stocker'";
-  const { rows } = await pool.query(queryText, [name]);
-  return rows;
-};
-
-export const getsCashierByName = async (
-  name: string
-): Promise<{ name: string; email: string; role: string }[]> => {
-  const queryText =
-    "SELECT name, email, role FROM users WHERE name=$1 AND role='cashier'";
-  const { rows } = await pool.query(queryText, [name]);
-  return rows;
-};
-
-export const getsAdminByName = async (
-  name: string
-): Promise<{ name: string; email: string; role: string }[]> => {
-  const queryText =
-    "SELECT id, name, email, role FROM users WHERE name=$1 AND role='admin'";
   const { rows } = await pool.query(queryText, [name]);
   return rows;
 };
