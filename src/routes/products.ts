@@ -19,7 +19,7 @@ router.get(
 
 // get all products in stock by batch id
 router.get(
-  "/stock/products/total/:batch_id",
+  "/stock/products/:batch_id",
   authMiddleware,
   verifyRoles("admin", "stocker"),
   getAllProductsFromBatch
