@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import {
-  getTotalProducts,
+  getsTotalProducts,
   getsTotalProfit,
-  getTotalProductsByName,
+  getsTotalProductsByName,
 } from "../model/products";
 
 export const getTotalProductsInStock = async (req: Request, res: Response) => {
   try {
-    const totalProducts = await getTotalProducts();
+    const totalProducts = await getsTotalProducts();
     res.status(200).json({ "Total of products in stock": totalProducts });
   } catch (error: any) {
     res.status(500).json({
@@ -31,7 +31,7 @@ export const getTotalStockProfit = async (req: Request, res: Response) => {
 
 export const getStockByProductName = async (req: Request, res: Response) => {
   try {
-    const itemsByProductName = await getTotalProductsByName();
+    const itemsByProductName = await getsTotalProductsByName();
     res.status(200).json({ itemsByProductName });
   } catch (error: any) {
     res.status(500).json({
