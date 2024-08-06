@@ -34,7 +34,7 @@ router.get(
 );
 
 // get products by name
-router.get(
+router.post(
   "/stock/products/name",
   authMiddleware,
   verifyRoles("admin", "stocker"),
