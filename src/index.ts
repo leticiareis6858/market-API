@@ -82,6 +82,7 @@ const createProductsTable = async () => {
         unit_selling_price DECIMAL NOT NULL,
         expiration_date DATE NOT NULL,
         batch_id INTEGER NOT NULL,
+        status VARCHAR(255) NOT NULL,
         FOREIGN KEY (batch_id) REFERENCES product_batches(id)
     );`);
       console.log("Products table created!");
