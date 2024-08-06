@@ -31,7 +31,7 @@ export const createsBatch = async (
     const products: IProduct[] = [];
     for (let i = 0; i < quantity; i++) {
       const productResult = await client.query(
-        "INSERT INTO products (name, unit_buying_price, unit_selling_price, expiration_date, batch_id) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+        "INSERT INTO products (name, unit_buying_price, unit_selling_price, expiration_date, batch_id, status) VALUES ($1, $2, $3, $4, $5, 'available') RETURNING *",
         [
           product_name,
           unit_buying_price,

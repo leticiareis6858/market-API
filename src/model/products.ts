@@ -7,6 +7,7 @@ export interface IProduct {
   unit_selling_price: number;
   expiration_date: Date;
   batch_id: number;
+  status: "available" | "sold" | "expired";
 }
 
 export const createsProduct = async (
@@ -122,4 +123,13 @@ export const getsAllProductsFromBatch = async (
   const queryText = "SELECT * FROM products WHERE batch_id=$1";
   const { rows } = await pool.query(queryText, [batch_id]);
   return rows;
+};
+
+export const updatesProductStatus = async (
+  id: number,
+  status: "available" | "sold"
+): Promise<void> => {
+  const queryText = "UPDATE products SET status = $2 WHERE id = $1";
+  const { rows } = await pool.query(queryText, [id, status]);
+  return rows[0];
 };
