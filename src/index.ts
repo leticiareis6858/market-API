@@ -6,12 +6,20 @@ import { batchesRoutes } from "./routes/batches";
 import { stockRoutes } from "./routes/stock";
 import { userRoutes } from "./routes/users";
 import { purchaseRoutes } from "./routes/purchases";
+import { productsRoutes } from "./routes/products";
 
 const app = express();
 
 app.use(express.json());
 
-app.use("/api-market", batchesRoutes, stockRoutes, userRoutes, purchaseRoutes);
+app.use(
+  "/api-market",
+  batchesRoutes,
+  stockRoutes,
+  userRoutes,
+  purchaseRoutes,
+  productsRoutes
+);
 
 dotenv.config();
 
@@ -127,10 +135,8 @@ const createPurchasesTable = async () => {
     if (!tableExists) {
       await client.query(`CREATE TABLE IF NOT EXISTS purchases (
         id SERIAL PRIMARY KEY,
-        client_id INTEGER NOT NULL,
         cashier_id INTEGER NOT NULL,
         total_price DECIMAL NOT NULL,
-        FOREIGN KEY (client_id) REFERENCES users(id),
         FOREIGN KEY (cashier_id) REFERENCES users(id)
       );`);
       console.log("Purchases table created!");
