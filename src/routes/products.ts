@@ -40,3 +40,5 @@ router.get(
   verifyRoles("admin", "stocker"),
   getProductsByName
 );
+
+export { router as productsRoutes };
