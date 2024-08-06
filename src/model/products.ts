@@ -34,10 +34,12 @@ export const getsAllProducts = async (): Promise<IProduct[]> => {
 };
 
 export const getsProductsByName = async (name: string): Promise<IProduct[]> => {
-  const { rows } = await pool.query(
-    "SELECT name, unit_buying_price, unit_selling_price, expiration_date, batch_id FROM products WHERE name ILIKE $1",
-    [name]
-  );
+  if (!name || typeof name !== "string") {
+    throw new Error("Invalid input. 'name' must be a non-empty string.");
+  }
+
+  const queryText = "SELECT * FROM products WHERE name ILIKE $1";
+  const { rows } = await pool.query(queryText, [`%${name}%`]);
   return rows;
 };
 
