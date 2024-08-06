@@ -9,7 +9,7 @@ export interface IProduct {
   batch_id: number;
 }
 
-export const createProduct = async (
+export const createsProduct = async (
   name: string,
   unit_buying_price: number,
   unit_selling_price: number,
@@ -28,26 +28,27 @@ export const createProduct = async (
   return rows[0];
 };
 
-export const getAllProducts = async (): Promise<IProduct[]> => {
+export const getsAllProducts = async (): Promise<IProduct[]> => {
   const { rows } = await pool.query("SELECT * FROM products");
   return rows;
 };
 
-export const getProductsByName = async (name: string): Promise<IProduct[]> => {
-  const { rows } = await pool.query("SELECT * FROM products WHERE name = $1", [
-    name,
-  ]);
+export const getsProductsByName = async (name: string): Promise<IProduct[]> => {
+  const { rows } = await pool.query(
+    "SELECT name, unit_buying_price, unit_selling_price, expiration_date, batch_id FROM products WHERE name ILIKE $1",
+    [name]
+  );
   return rows;
 };
 
-export const getProductById = async (id: number): Promise<IProduct> => {
+export const getsProductById = async (id: number): Promise<IProduct> => {
   const { rows } = await pool.query("SELECT * FROM products WHERE id = $1", [
     id,
   ]);
   return rows[0];
 };
 
-export const updateProductName = async (
+export const updatesProductName = async (
   id: number,
   name: string
 ): Promise<void> => {
@@ -55,7 +56,7 @@ export const updateProductName = async (
   await pool.query(queryText, [id, name]);
 };
 
-export const updateProductExpirationDate = async (
+export const updatesProductExpirationDate = async (
   id: number,
   expiration_date: Date
 ): Promise<void> => {
@@ -63,7 +64,7 @@ export const updateProductExpirationDate = async (
   await pool.query(queryText, [id, expiration_date]);
 };
 
-export const updateProductBatch = async (
+export const updatesProductBatch = async (
   id: number,
   batch_id: number
 ): Promise<void> => {
@@ -71,12 +72,12 @@ export const updateProductBatch = async (
   await pool.query(queryText, [id, batch_id]);
 };
 
-export const deleteProduct = async (id: number): Promise<void> => {
+export const deletesProduct = async (id: number): Promise<void> => {
   const queryText = "DELETE FROM products WHERE id = $1";
   await pool.query(queryText, [id]);
 };
 
-export const getTotalProducts = async (): Promise<number> => {
+export const getsTotalProducts = async (): Promise<number> => {
   const queryText = "SELECT COUNT(*) FROM products";
   const { rows } = await pool.query(queryText);
   return parseInt(rows[0].count);
@@ -104,11 +105,19 @@ export const getsTotalProfit = async (): Promise<number> => {
   return totalProfit;
 };
 
-export const getTotalProductsByName = async (): Promise<
+export const getsTotalProductsByName = async (): Promise<
   { product_name: string; total: number }[]
 > => {
   const queryText =
     "SELECT name AS product_name, COUNT(*) AS total_in_stock FROM products GROUP BY product_name";
   const { rows } = await pool.query(queryText);
+  return rows;
+};
+
+export const getsAllProductsFromBatch = async (
+  batch_id: number
+): Promise<IProduct[]> => {
+  const queryText = "SELECT * FROM products WHERE batch_id=$1";
+  const { rows } = await pool.query(queryText, [batch_id]);
   return rows;
 };
