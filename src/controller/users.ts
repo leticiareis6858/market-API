@@ -301,20 +301,15 @@ export const getCashierById = async (req: Request, res: Response) => {
 
 export const getWorkerByName = async (req: Request, res: Response) => {
   try {
-    // Access 'name' from the request body, not query parameters
     const { name } = req.body;
-    console.log("Request body:", req.body); // Log the incoming request body
 
-    // Validate 'name' input
     if (!name || typeof name !== "string" || name.trim() === "") {
       throw new Error("Invalid input. 'name' must be a non-empty string.");
     }
 
-    // Retrieve worker using the name
     const worker = await getsWorkerByName(name);
     res.status(200).json(worker);
   } catch (error: any) {
-    console.error("Error fetching worker:", error.message); // Log the error message
     res.status(500).json({
       msg: "Error while getting worker. Please, try again.",
       error: error.message || "Unknown error",
