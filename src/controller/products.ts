@@ -20,7 +20,15 @@ export const getAllProducts = async (req: Request, res: Response) => {
 
 export const getAllProductsFromBatch = async (req: Request, res: Response) => {
   try {
-    const batch_id = req.params;
+    const { batch_id } = req.params;
+
+    if (isNaN(Number(batch_id))) {
+      return res.status(400).json({
+        msg: "Error while getting products. Please, try again.",
+        error: "Batch ID must be a valid integer.",
+      });
+    }
+
     const products = await getsAllProductsFromBatch(Number(batch_id));
     res.status(200).json({ products });
   } catch (error: any) {
