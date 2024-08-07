@@ -73,3 +73,9 @@ export const deletesPurchase = async (purchase_id: number): Promise<void> => {
   const deletePurchaseQueryText = `DELETE FROM purchases WHERE id = $1`;
   await pool.query(deletePurchaseQueryText, [purchase_id]);
 };
+
+export const getsAllPurchases = async (): Promise<IPurchase[]> => {
+  const queryText = `SELECT * FROM purchases`;
+  const { rows } = await pool.query(queryText);
+  return rows;
+};

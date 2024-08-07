@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { createPurchase, deletePurchase } from "../controller/purchases";
+import {
+  createPurchase,
+  deletePurchase,
+  getAllPurchases,
+} from "../controller/purchases";
 import { authMiddleware, verifyRoles } from "../middleware/authentication";
 
 const router = Router();
@@ -18,6 +22,14 @@ router.delete(
   authMiddleware,
   verifyRoles("admin", "manager", "cashier"),
   deletePurchase
+);
+
+//get all purchases:
+router.get(
+  "/purchase/all",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  getAllPurchases
 );
 
 export { router as purchaseRoutes };
