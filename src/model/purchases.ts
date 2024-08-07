@@ -94,7 +94,32 @@ export const getsPurchasesProfit = async (): Promise<number> => {
 };
 
 export const getsPurchaseById = async (id: number): Promise<IPurchase> => {
-  const queryText = `SELECT id, cashier_id, products, total_price FROM purchases WHERE id = $1`;
+  const queryText = `
+    SELECT 
+      purchases.id, 
+      purchases.cashier_id, 
+      purchases.total_price, 
+      json_agg(
+        json_build_object(
+          'id', products.id,
+          'name', products.name,
+          'expiration_date',products.expiration_date,
+          'price', products.unit_selling_price,
+          'status', products.status,
+          'batch_id', products.batch_id
+        )
+      ) AS products
+    FROM 
+      purchases
+    LEFT JOIN 
+      purchased_products ON purchases.id = purchased_products.purchase_id
+    LEFT JOIN 
+      products ON purchased_products.product_id = products.id
+    WHERE 
+      purchases.id = $1
+    GROUP BY 
+      purchases.id
+  `;
   const { rows } = await pool.query(queryText, [id]);
   return rows[0];
 };
