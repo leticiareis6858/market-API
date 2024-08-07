@@ -6,7 +6,7 @@ const router = Router();
 
 //create purchase:
 router.post(
-  "/purchase",
+  "/purchase/create",
   authMiddleware,
   verifyRoles("admin", "cashier"),
   createPurchase
