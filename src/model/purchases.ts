@@ -92,3 +92,9 @@ export const getsPurchasesProfit = async (): Promise<number> => {
 
   return parseFloat(totalProfit.toFixed(2));
 };
+
+export const getsPurchaseById = async (id: number): Promise<IPurchase> => {
+  const queryText = `SELECT * FROM purchases WHERE id = $1`;
+  const { rows } = await pool.query(queryText, [id]);
+  return rows[0];
+};

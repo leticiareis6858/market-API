@@ -4,6 +4,7 @@ import {
   deletePurchase,
   getAllPurchases,
   getPurchasesProfit,
+  getPurchaseById,
 } from "../controller/purchases";
 import { authMiddleware, verifyRoles } from "../middleware/authentication";
 
@@ -39,6 +40,14 @@ router.get(
   authMiddleware,
   verifyRoles("admin", "manager"),
   getPurchasesProfit
+);
+
+//get purchase by id:
+router.get(
+  "/purchase/:id",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  getPurchaseById
 );
 
 export { router as purchaseRoutes };

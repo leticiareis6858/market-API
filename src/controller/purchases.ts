@@ -3,7 +3,8 @@ import {
   createsPurchase,
   deletesPurchase,
   getsAllPurchases,
-  getsPurchasesProfit
+  getsPurchasesProfit,
+  getsPurchaseById,
 } from "../model/purchases";
 
 export const createPurchase = async (req: Request, res: Response) => {
@@ -45,14 +46,28 @@ export const getAllPurchases = async (req: Request, res: Response) => {
   }
 };
 
-export const getPurchasesProfit=async(req:Request,res:Response)=>{
-  try{
-    const totalProfit=await getsPurchasesProfit();
-    res.status(200).json({msg: `Total profit: $${totalProfit}` });
-  } catch(error:any){
+export const getPurchasesProfit = async (req: Request, res: Response) => {
+  try {
+    const totalProfit = await getsPurchasesProfit();
+    res.status(200).json({ msg: `Total profit: $${totalProfit}` });
+  } catch (error: any) {
     res.status(500).json({
       msg: "Error while getting purchases profit. Please, try again.",
       error: error.message || "Unknown error",
     });
   }
-}
+};
+
+export const getPurchaseById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const purchase_id = Number(id);
+    const purchase = await getsPurchaseById(purchase_id);
+    res.status(200).json({ purchase });
+  } catch (error: any) {
+    res.status(500).json({
+      msg: "Error while getting purchase. Please, try again.",
+      error: error.message || "Unknown error",
+    });
+  }
+};
