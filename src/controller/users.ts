@@ -21,26 +21,7 @@ import {
   getsWorkerByName,
 } from "../model/users";
 
-export const createUser = async (req: Request, res: Response) => {
-  try {
-    const { name, email, password, role } = req.body;
-
-    if (role != "cashier" && role != "stocker" && role != "manager") {
-      return res.status(400).json({
-        message:
-          "Please provide a valid role. Acepted roles: cashier, stocker, manager.",
-      });
-    }
-    const newUser = await createsUser(name, email, password, role);
-    res.status(201).json({ msg: "User created!", user: newUser });
-  } catch (error: any) {
-    res.status(500).json({
-      msg: "Error while creating user. Please, try again.",
-      error: error.message || "Unknown error",
-    });
-  }
-};
-
+//login:
 export const userLogin = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -57,6 +38,29 @@ export const userLogin = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({
       msg: "Error while authenticating user. Please, try again.",
+      error: error.message || "Unknown error",
+    });
+  }
+};
+
+//logout:
+
+//create:
+export const createUser = async (req: Request, res: Response) => {
+  try {
+    const { name, email, password, role } = req.body;
+
+    if (role != "cashier" && role != "stocker" && role != "manager") {
+      return res.status(400).json({
+        message:
+          "Please provide a valid role. Acepted roles: cashier, stocker, manager.",
+      });
+    }
+    const newUser = await createsUser(name, email, password, role);
+    res.status(201).json({ msg: "User created!", user: newUser });
+  } catch (error: any) {
+    res.status(500).json({
+      msg: "Error while creating user. Please, try again.",
       error: error.message || "Unknown error",
     });
   }
