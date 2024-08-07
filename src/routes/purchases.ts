@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createPurchase } from "../controller/purchases";
+import { createPurchase, deletePurchase } from "../controller/purchases";
 import { authMiddleware, verifyRoles } from "../middleware/authentication";
 
 const router = Router();
@@ -10,6 +10,14 @@ router.post(
   authMiddleware,
   verifyRoles("admin", "cashier"),
   createPurchase
+);
+
+//delete purchase:
+router.delete(
+  "/purchase/delete/:id",
+  authMiddleware,
+  verifyRoles("admin", "manager", "cashier"),
+  deletePurchase
 );
 
 export { router as purchaseRoutes };
