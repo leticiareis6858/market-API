@@ -1,38 +1,63 @@
 import pool from "../db/pool";
+import { getsProductById, updatesProductStatus } from "./products";
+import { IProduct } from "../model/products";
 
 export interface IPurchase {
   id: number;
-  client_id: number;
   cashier_id: number;
-  products: number[];
+  products: IProduct[];
   total_price: number;
 }
 
 export const createsPurchase = async (
-  client_id: number,
   cashier_id: number,
   products: number[]
 ): Promise<IPurchase> => {
-  const totalPriceQueryText =
-    "SELECT SUM(unit_selling_price) FROM products WHERE id = ANY($1::int[])";
-  const totalPriceResult = await pool.query(totalPriceQueryText, [products]);
-  const total_price = totalPriceResult.rows[0].total_price;
+  let total_price = 0;
+  const productDetails: IProduct[] = [];
 
-  const purchaseQuertyText =
-    "INSERT INTO purchases(client_id,cashier_id,total_price) VALUES($1,$2,$3) RETURNING *";
-  const purchaseResult = await pool.query(purchaseQuertyText, [
-    client_id,
+  for (const productId of products) {
+    const product = await getsProductById(productId);
+    if (product && product.status === "available") {
+      productDetails.push(product);
+      let price = product.unit_selling_price;
+      if (typeof price === "string") {
+        price = parseFloat(price);
+      }
+      total_price += price;
+
+      product.status = "sold";
+      await updatesProductStatus(productId, "sold");
+    } else {
+      throw new Error(
+        `Produto com ID ${productId} não está disponível para compra.`
+      );
+    }
+  }
+
+  const purchaseQueryText = `
+    INSERT INTO purchases (cashier_id, total_price)
+    VALUES ($1, $2)
+    RETURNING id
+  `;
+  const purchaseResult = await pool.query(purchaseQueryText, [
     cashier_id,
     total_price,
   ]);
-  const purchase_id = purchaseResult.rows[0].id;
+  const purchaseId = purchaseResult.rows[0].id;
 
-  const purchasedProductsQueryText =
-    "INSERT INTO purchased_products(purchase_id,product_id) SELECT $1, id FROM products WHERE id = ANY($2::int[])";
-  await pool.query(purchasedProductsQueryText, [purchase_id, products]);
+  const purchasedProductQueryText = `
+    INSERT INTO purchased_products (purchase_id, product_id)
+    VALUES ($1, $2)
+  `;
+  for (const product of productDetails) {
+    await pool.query(purchasedProductQueryText, [purchaseId, product.id]);
+  }
 
-  const deleteProductsQuery = "DELETE FROM products WHERE id = ANY($1::int[])";
-  await pool.query(deleteProductsQuery, [products]);
-
-  return { id: purchase_id, client_id, cashier_id, products, total_price };
+  return {
+    id: purchaseId,
+    cashier_id,
+    products: productDetails,
+    total_price,
+  };
 };
