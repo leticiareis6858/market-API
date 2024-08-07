@@ -61,3 +61,15 @@ export const createsPurchase = async (
     total_price,
   };
 };
+
+export const deletesPurchase = async (purchase_id: number): Promise<void> => {
+  const productIdsQueryText = ` SELECT product_id FROM purchased_products WHERE purchase_id = $1`;
+  const productIdsResult = await pool.query(productIdsQueryText, [purchase_id]);
+  const productsIds = productIdsResult.rows.map((row) => row.product_id);
+
+  const updateProductsStatusQueryText = `UPDATE products SET status = 'available' WHERE id = ANY($1::int[])`;
+  await pool.query(updateProductsStatusQueryText, [productsIds]);
+
+  const deletePurchaseQueryText = `DELETE FROM purchases WHERE id = $1`;
+  await pool.query(deletePurchaseQueryText, [purchase_id]);
+};
