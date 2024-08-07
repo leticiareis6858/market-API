@@ -3,6 +3,7 @@ import {
   createsPurchase,
   deletesPurchase,
   getsAllPurchases,
+  getsPurchasesProfit
 } from "../model/purchases";
 
 export const createPurchase = async (req: Request, res: Response) => {
@@ -43,3 +44,15 @@ export const getAllPurchases = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getPurchasesProfit=async(req:Request,res:Response)=>{
+  try{
+    const totalProfit=await getsPurchasesProfit();
+    res.status(200).json({msg: `Total profit: $${totalProfit}` });
+  } catch(error:any){
+    res.status(500).json({
+      msg: "Error while getting purchases profit. Please, try again.",
+      error: error.message || "Unknown error",
+    });
+  }
+}

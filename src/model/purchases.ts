@@ -79,3 +79,16 @@ export const getsAllPurchases = async (): Promise<IPurchase[]> => {
   const { rows } = await pool.query(queryText);
   return rows;
 };
+
+export const getsPurchasesProfit = async (): Promise<number> => {
+  const queryText = `SELECT SUM(total_price) AS total_profit FROM purchases`;
+  const { rows } = await pool.query(queryText);
+
+  const totalProfit = parseFloat(rows[0].total_profit);
+
+  if (isNaN(totalProfit) || totalProfit === 0) {
+    throw new Error("No profit from purchases or no purchases made.");
+  }
+
+  return parseFloat(totalProfit.toFixed(2));
+};

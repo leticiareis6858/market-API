@@ -3,6 +3,7 @@ import {
   createPurchase,
   deletePurchase,
   getAllPurchases,
+  getPurchasesProfit,
 } from "../controller/purchases";
 import { authMiddleware, verifyRoles } from "../middleware/authentication";
 
@@ -30,6 +31,13 @@ router.get(
   authMiddleware,
   verifyRoles("admin", "manager"),
   getAllPurchases
+);
+
+router.get(
+  "/purchase/profit",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  getPurchasesProfit
 );
 
 export { router as purchaseRoutes };
