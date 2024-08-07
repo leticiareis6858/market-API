@@ -5,6 +5,8 @@ import {
   getAllPurchases,
   getPurchasesProfit,
   getPurchaseById,
+  updatePurchaseCashier,
+  updatePurchaseProducts,
 } from "../controller/purchases";
 import { authMiddleware, verifyRoles } from "../middleware/authentication";
 
@@ -48,6 +50,22 @@ router.get(
   authMiddleware,
   verifyRoles("admin", "manager"),
   getPurchaseById
+);
+
+//update purchase cashier:
+router.patch(
+  "/purchase/update/cashier/:id",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  updatePurchaseCashier
+);
+
+//update purchase products:
+router.patch(
+  "/purchase/update/products/:id",
+  authMiddleware,
+  verifyRoles("admin", "manager"),
+  updatePurchaseProducts
 );
 
 export { router as purchaseRoutes };

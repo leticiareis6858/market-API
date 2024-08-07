@@ -5,6 +5,8 @@ import {
   getsAllPurchases,
   getsPurchasesProfit,
   getsPurchaseById,
+  updatesPurchaseCashier,
+  updatesPurchaseProducts,
 } from "../model/purchases";
 
 export const createPurchase = async (req: Request, res: Response) => {
@@ -67,6 +69,46 @@ export const getPurchaseById = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({
       msg: "Error while getting purchase. Please, try again.",
+      error: error.message || "Unknown error",
+    });
+  }
+};
+
+export const updatePurchaseCashier = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { cashier_id } = req.body;
+    const purchase_id = Number(id);
+    const updatedPurchase = await updatesPurchaseCashier(
+      purchase_id,
+      cashier_id
+    );
+    res
+      .status(200)
+      .json({ msg: "Purchase cashier updated!", purchase: updatedPurchase });
+  } catch (error: any) {
+    res.status(500).json({
+      msg: "Error while updating purchase cashier. Please, try again.",
+      error: error.message || "Unknown error",
+    });
+  }
+};
+
+export const updatePurchaseProducts = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { products } = req.body;
+    const purchase_id = Number(id);
+    const updatedPurchase = await updatesPurchaseProducts(
+      purchase_id,
+      products
+    );
+    res
+      .status(200)
+      .json({ msg: "Purchase products updated!", purchase: updatedPurchase });
+  } catch (error: any) {
+    res.status(500).json({
+      msg: "Error while updating purchase products. Please, try again.",
       error: error.message || "Unknown error",
     });
   }

@@ -94,7 +94,70 @@ export const getsPurchasesProfit = async (): Promise<number> => {
 };
 
 export const getsPurchaseById = async (id: number): Promise<IPurchase> => {
-  const queryText = `SELECT * FROM purchases WHERE id = $1`;
+  const queryText = `SELECT id, cashier_id, products, total_price FROM purchases WHERE id = $1`;
   const { rows } = await pool.query(queryText, [id]);
   return rows[0];
+};
+
+export const updatesPurchaseCashier = async (
+  id: number,
+  cashier_id: number
+): Promise<IPurchase> => {
+  const queryText = `UPDATE purchases SET cashier_id = $1 WHERE id = $2 RETURNING *`;
+  const { rows } = await pool.query(queryText, [cashier_id, id]);
+  return rows[0];
+};
+
+export const updatesPurchaseProducts = async (
+  id: number,
+  products: number[]
+): Promise<IPurchase> => {
+  const productDetails: IProduct[] = [];
+  let total_price = 0;
+
+  const deletePurchasedProductsQueryText = `
+    DELETE FROM purchased_products
+    WHERE purchase_id = $1
+  `;
+  await pool.query(deletePurchasedProductsQueryText, [id]);
+
+  for (const productId of products) {
+    const product = await getsProductById(productId);
+    if (product && product.status === "available") {
+      productDetails.push(product);
+      let price = product.unit_selling_price;
+      if (typeof price === "string") {
+        price = parseFloat(price);
+      }
+      total_price += price;
+
+      product.status = "sold";
+      await updatesProductStatus(productId, "sold");
+    } else {
+      throw new Error(`Product with ID ${productId} isn't available for sale.`);
+    }
+  }
+
+  const purchaseQueryText = `
+    UPDATE purchases SET total_price=$1
+    WHERE id=$2
+    RETURNING cashier_id
+  `;
+  const purchaseResult = await pool.query(purchaseQueryText, [total_price, id]);
+  const cashier_id = purchaseResult.rows[0].cashier_id;
+
+  const purchasedProductQueryText = `
+    INSERT INTO purchased_products (purchase_id, product_id)
+    VALUES ($1, $2)
+  `;
+  for (const product of productDetails) {
+    await pool.query(purchasedProductQueryText, [id, product.id]);
+  }
+
+  return {
+    id,
+    cashier_id,
+    products: productDetails,
+    total_price,
+  };
 };
