@@ -21,7 +21,7 @@ router.post(
 router.delete(
   "/purchase/delete/:id",
   authMiddleware,
-  verifyRoles("admin", "manager", "cashier"),
+  verifyRoles("admin", "manager"),
   deletePurchase
 );
 
@@ -33,6 +33,7 @@ router.get(
   getAllPurchases
 );
 
+//get total profit of all purchases:
 router.get(
   "/purchase/profit",
   authMiddleware,
