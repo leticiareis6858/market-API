@@ -3,8 +3,8 @@ import { createsPurchase } from "../model/purchases";
 
 export const createPurchase = async (req: Request, res: Response) => {
   try {
-    const { client_id, cashier_id, products } = req.body;
-    const newPurchase = await createsPurchase(client_id, cashier_id, products);
+    const { cashier_id, products } = req.body;
+    const newPurchase = await createsPurchase(cashier_id, products);
     res.status(201).json({ msg: "Purchase created!", purchase: newPurchase });
   } catch (error: any) {
     res.status(500).json({
