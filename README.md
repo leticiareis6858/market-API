@@ -70,3 +70,7 @@ For a better first experience with the application, I recommend creating an Admi
 ## ✏| License
 
 This project is licensed under the [MIT License](LICENSE).
+
+## 📃| To-do:
+
+- [ ] Document this API using Swagger
