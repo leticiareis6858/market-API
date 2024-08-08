@@ -24,12 +24,12 @@ This project is a market REST API that allows the management of purchases, worke
 ## 💻| Installation
 
 1. Clone the repository or download the `.zip` file.
-2. Import the application Postman collection using the file `Collection.postman.json`.
+2. Import the application Postman collection using the file `market-API.postman_collection.json`.
 3. Install the required dependencies using `npm install`.
 4. Rename the file `.envExample` to `.env`.
 5. Set up the database and configure the connection in the `.env` file.
 6. Run the application through the console using `npm start`.
-7. Use the application routes through **Postman** or the Swagger route.
+7. Use the application routes through **Postman**.
 
 ## 🕸| Application main URL:
 
