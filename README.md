@@ -31,13 +31,19 @@ This project is a market REST API that allows the management of purchases, worke
 6. Run the application through the console using `npm start`.
 7. Use the application routes through **Postman** or the Swagger route.
 
+## 🕸| Application main URL:
+
+This application main url is `localhost:3000/api-market/`.
+
 ## 📦| Usage
 
-1. Create a user to use the application.
-2. Browse the available products or search for specific items.
-3. Add desired products to the shopping cart.
-4. Proceed to checkout and complete the payment process.
-5. View and manage your orders in the user dashboard.
+1. Use the application through _Postman_.
+2. Create an _admin_ user first to use the application(use the route `/user/register/admin` for this).
+3. After creating an admin you can access the route `/user/register/worker` to create workers.
+4. Log in with the created user by using the route `/user/login`
+5. Remember to always provide the Bearer token when accessing a route. Also, remember that the token expires in 1 hour.
+
+For a better first experience with the application, I recommend creating an Admin user and explore all the routes using this user.
 
 ## 📋| Roles Access
 
