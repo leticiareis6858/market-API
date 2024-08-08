@@ -1,0 +1,66 @@
+# 🛒| Market - REST API
+
+This project is a market REST API that allows the management of purchases, workers, and product stock.
+
+## ⚙| Technologies Used
+
+- Node.js
+- Express.js
+- TypeScript
+- PostgreSQL
+- JWT & bcrypt for authentication
+- Postman
+
+## 📝| Features
+
+- User/worker authentication and authorization
+- Batch product creation and management
+- Easy addition of products to stock through batch creation
+- Stock management
+- Sales profit and expected profit management
+- Worker management
+- Purchase creation
+
+## 💻| Installation
+
+1. Clone the repository or download the `.zip` file.
+2. Import the application Postman collection using the file `Collection.postman.json`.
+3. Install the required dependencies using `npm install`.
+4. Rename the file `.envExample` to `.env`.
+5. Set up the database and configure the connection in the `.env` file.
+6. Run the application through the console using `npm start`.
+7. Use the application routes through **Postman** or the Swagger route.
+
+## 📦| Usage
+
+1. Create a user to use the application.
+2. Browse the available products or search for specific items.
+3. Add desired products to the shopping cart.
+4. Proceed to checkout and complete the payment process.
+5. View and manage your orders in the user dashboard.
+
+## 📋| Roles Access
+
+- **_Admins:_** Can access all routes.
+- **_Managers:_** Can access the following routes:
+  - **Create User/Worker -** /user/register/worker
+  - **Update User/Worker -** /user/update/:id
+  - **Update User/Worker Role -** /user/update/role/:id
+  - **Delete User/Worker -** /user/delete/:id
+  - **Get All Stockers -** /user/all/stocker
+  - **Get All Cashiers -** /user/all/cashier
+  - **Get Stocker by ID -** /user/stocker/:id
+  - **Get Cashier by ID -** /user/cashier/:id
+  - **Get User/Worker by Name -** /user/name
+  - **Get Stock Total Profit (estimated value) -** /stock/total-profit
+  - **All routes related to batch management**
+  - **Almost all routes related to purchase management, except the route to create a purchase**
+- **_Stockers:_**
+  - **All routes related to stock management**
+  - **All routes related to product management**
+- **_Cashiers:_**
+  - **Can only access the route to create a purchase**
+
+## ✏| License
+
+This project is licensed under the [MIT License](LICENSE).
