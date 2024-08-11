@@ -74,3 +74,4 @@ This project is licensed under the [MIT License](LICENSE).
 ## 📃| To-do:
 
 - [ ] Document this API using Swagger
+- [ ] Add description to the folders of the Postman Collection
