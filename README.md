@@ -67,7 +67,7 @@ For a better first experience with the application, I recommend creating an Admi
 - **_Cashiers:_**
   - **Can only access the route to create a purchase**
 
-## ✏| License
+## ⚖| License
 
 This project is licensed under the [MIT License](LICENSE).
 
